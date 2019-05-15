@@ -1,0 +1,166 @@
+\section{Обзор}
+В этой главе будут рассмотрены среды исполнения и языки смарт-контрактов, а так же некоторые особенности \name{Hyperledger Iroha}.
+
+\subsection{Языки и среды исполнения смарт-контрактов}
+В 1997 году Ник Сабо (Nick Szabo) предложил концепцию смарт-контрактов~\cite{Szabo_SC}.
+Смарт-контракт --- это программа, которая описывает взаимодействие участников блокчейн-сети. 
+При сравнении с традиционным бумажным контрактом, смарт-контракт имеет однозначную семантику и выполняется автоматически при достижении определенных условий.
+Результат выполнения смарт-контракта легко подтверждается, так как он будет записан в историю транзакций блокчейна.
+На сегодняшний день существует множество различных языков смарт-контрактов и блокчейнов, которые могут исполнять программы на этих языках.
+
+Смарт-контракт всегда должен завершаться для продолжения работы блокчейн-сети.
+Если язык смарт-контрактов Тьюринг-полный, то среда исполнения должна предоставлять механизм, который будет ограничивать тем или иным способом количество операций смарт-контракта.
+В случае \name{Ethereum} каждая инструкция стоит определенное количество \emph{газа}, цена которого выражена во внутренней криптовалюте \name{Et\-he\-re\-um}.
+В \name{Hyperledger Fabric} выставлено ограничение на время выполнения кода смарт-контракта.
+
+Далее будут рассмотрены несколько сред исполнения смарт-кон\-трак\-тов и языки, которые данные среды поддерживают.
+
+\subsubsection{Языки смарт-контрактов}
+В этой подглаве рассмотрены языки смарт-контрактов с учетом их парадигм и свойств, таких как Тьюринг-полнота, механизм ограничения выполнения смарт-контракта платформой (на которой смарт-контракт исполняется) и системы типов.
+
+На данный момент существуют языки с различным уровнем абстракции. 
+Низкоуровневые языки (low-level) 
+
+В ходе обзора языков смарт-контрактов на конференцию SYRCoSE 2019 была написана обзорная статья \emph{A Survey of Smart Contract Safety and Pro\-gram\-ming Languages}, которая будет опубликована в Proceedings of ISP RAS.
+Ниже приведена сводная таблица по языкам смарт-кон\-трак\-тов и их свойствам из данной статьи.
+В ней приведены следующие характеристики языков смарт-контрактов: название, уровень абстракции, текущее состояние разработки, проект (для которого язык предназначен), парадигма, способ ограничения выполнения смарт-контракта и Тьюринг-полнота соответственно. 
+
+
+\begin{ThreePartTable}
+\renewcommand\TPTminimum{\textwidth}
+% Arrange for "longtable" to take up full width of text block
+\setlength\LTleft{0pt}
+\setlength\LTright{0pt}
+\setlength\tabcolsep{0pt}
+%\begin{TableNotes}
+%\end{TableNotes}
+\fontsize{11}{12}\selectfont
+\begin{longtable}{  l @{\extracolsep{\fill}} *{6}{c} }
+\toprule
+    Language & Level & Current & Project
+    & Paradigm /& Metering & Turing\\ 
+    & & state & & influence & & completeness\\
+\midrule
+\endhead
+
+\midrule[\heavyrulewidth]
+\multicolumn{7}{r}{\textit{продолжение}}\\
+\endfoot  
+
+\midrule[\heavyrulewidth]
+%\insertTableNotes  % tell LaTeX where to insert the table-related notes
+\endlastfoot
+
+Bamboo & high-level & alpha & Ethereum & functional 
+& \centering {gas system} & yes\\
+& & (experimental) & & & &\\
+\addlinespace
+
+Bitcoin & low-level & under & Bitcoin & stack-based, 
+& script size & no\\
+Script & & development & & reverse-polish & &\\
+\addlinespace
+
+Chain-& high-level & stable & Hyperledger & general purpose & timeout & yes\\
+code & & & Fabric & languages & &\\
+\addlinespace
+
+EOSIO & high-level& stable & {EOS.IO} & object-oriented, & bound & yes\\
+& & & & statically typed & system &\\    
+\addlinespace
+
+EVM & low-level& stable & Ethereum & stack-based & \centering gas system & yes\\
+bytecode & & & & & &\\
+\addlinespace
+
+Flint & high-level & alpha & Ethereum & type safe, & {\centering gas system} & yes\\
+& & & & contract-oriented& &\\
+\addlinespace
+
+IELE & low-level & prototype & Ethereum & register- & gas system & yes\\
+& & & & based & &\\
+\addlinespace
+
+Ivy & high-level& prototype & Bitcoin & imperative & gas system & no\\
+& & (experimental) & & & & \\
+\addlinespace
+
+Liquidity & high-level & under & Tezos & fully-typed, & gas system & yes\\
+& & development & & functional & & \\
+\addlinespace
+
+LLL & intermediate-& under & Ethereum & stack-based & gas system & yes\\
+& level & development & & & & \\
+\addlinespace
+
+Logikon & high-level & experimental & Ethereum & logical- & gas system & yes\\
+& & & & functional & & \\
+\addlinespace
+
+Michelson & low-level & under & Tezos & stack-based, & gas system & yes\\
+& & development & & strongly typed & & \\
+\addlinespace
+
+Plutus & high-level & under & Cardano & functional & gas system & yes\\
+(PlutusCore) & (low-level) & development & & & & \\
+\addlinespace
+
+Rholang & high-level& under & RChain & functional & rule reduction & yes\\
+& & development & & & system & \\
+\addlinespace
+
+Scilla & intermediate-& under & Zilliqa & functional & gas system & no\\
+& level & development & & & & \\
+\addlinespace
+
+Simplicity & low-level & under & Bitcoin & functional, typed, & Bit Machine & no \\
+& & development & & combinator-based & & \\
+\addlinespace
+
+Solidity & high-level & stable & Ethereum & statically typed, & gas system & yes\\
+& & & & object-oriented & & \\
+\addlinespace
+
+SolidityX & high-level & beta & Ethereum & secure- & gas system & yes\\
+& & & & oriented & & \\
+\addlinespace
+
+Vyper & high-level & beta & Ethereum & imperative & gas system & no\\
+& & & & & & \\
+\addlinespace
+
+Yul & intermediate-& under & Ethereum & object-oriented & gas system & yes \\
+& level & development & & & & \\
+\addlinespace
+
+\end{longtable}   
+\end{ThreePartTable}
+
+По результатам статьи было выявлено, что \name{Ethereum} является наиболее популярной платформой для работы со смарт-контрактами.
+Экосистема данного блокчейна развита --- существует множество языков с различными подходами, сред разработки и статических анализаторов.
+Аналогичной экосистемы нет ни у одного из всех рассмотренных блокчейнов.
+
+\subsubsection{\name{Ethereum Virtual Machine}}
+% https://habr.com/ru/post/340928/
+\name{Ethereum Virtual Machine} (сокращенно \name{EVM}) --- виртуальная стековая машина блокчейна \name{Ethereum}~\cite{EthereumYellowPaper}.
+
+\subsubsection{\name{Hyperledger Burrow}}
+\name{Hyperledger Burrow} --- \name{EVM} с правами доступа, проект \name{Hy\-per\-led\-ger Fo\-un\-da\-ti\-on}.
+
+\subsection{\name{Hyperledger Iroha}}
+\subsubsection{Общие сведения о \name{Hyperledger Iroha}}
+Транзакции формируются с помощью набора специальных команд.
+
+\subsubsection{Валидация транзакции}
+Прежде чем принять транзакцию, всем участникам сети нужно подтвердить её корректность.
+Есть два этапа валидации --- \emph{stateless} и \emph{sta\-te\-ful}.
+Транзакция должна быть сформирована согласно некоторым правилам.
+Во время stateless валидации контролируется соответствие этим правилам.
+Далее проводится stateful валидация. 
+На этом этапе проверяется выполнимость отправленной транзакции (например, права доступа или наличие активов). 
+
+
+
+
+
+

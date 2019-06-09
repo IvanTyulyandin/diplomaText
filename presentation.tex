@@ -1,0 +1,120 @@
+\documentclass[hyperref={pdfpagelabels=false}]{beamer}
+\hypersetup{unicode=true}
+\usepackage{amssymb,cancel,cite,color,cmap,float,graphicx,lmodern,listings,
+  multirow,pifont,pgfplots,txfonts,tikz,wrapfig,xcolor,yfonts}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+
+% some weird help from tex compiler
+\pgfplotsset{compat=1.15}
+
+\usetikzlibrary{arrows,automata,positioning,shapes,shapes.multipart}
+\usetheme{Copenhagen}
+
+\setbeamertemplate{navigation symbols}{}
+%\addtobeamertemplate{number}{}{%
+%    \usebeamerfont{footline}%
+%    \usebeamercolor[black]{footline}%
+%    \hspace{1em}%
+%    \insertframenumber%/\inserttotalframenumber
+%}
+
+%\expandafter\def\expandafter\insertshorttitle\expandafter{%
+%  \insertshorttitle\hfill%
+%  \insertframenumber}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+    \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\addtobeamertemplate{navigation symbols}{}{
+  \usebeamerfont{footline}
+  \fontsize{14pt}{14}\selectfont
+  \usebeamercolor[black]{footline}
+  \hspace{1em}
+  \circled{${\insertframenumber}$}
+}
+%\textswab
+\setbeamertemplate{frametitle}[default][center]
+ 
+  
+\title[Смарт-контракты для Hyperledger Iroha]{Проектирование и реализация среды исполнения смарт-контрактов для блокчейна Hyperledger Iroha}  
+\author[И. Тюляндин]{Иван Тюляндин\\%
+Научный руководитель: ст.\,преп. Я.\,А.\,Кириленко\\%
+Консультант: к.\,ф.-м.\,н. Д.\,А.\,Березун\\%
+Рецензент: ген.\,дир. “Сорамитсу Лабс” К.\,Р.\,Салахиев%
+} 
+\date{\today} 
+\begin{document}
+{
+\setbeamertemplate{navigation symbols}{}
+\frame[noframenumbering,plain]{
+\maketitle
+} 
+}
+
+\begin{frame}{Предметная область}
+\begin{block}{Смарт-контракт} 
+Программа, описывающая сделку участников блокчейн-сети. Запускается автоматически при достижении условий. 
+Имеет преимущества перед бумажным контрактом.
+\end{block}
+\vfill
+\begin{block}{Hyperledger Iroha}
+Open-source блокчейн консорциума Hyperledger (https://github.com/hyperledger/iroha).
+\end{block}
+\end{frame} 
+
+\begin{frame}{Цель}
+Цель данной работы — создать прототип Hyperledger Iroha с возможностью выполнения смарт-контрактов.
+\vfill
+Смарт-контракты повысят доверие внутри сети и степень автоматизации договоров.
+\end{frame} 
+
+\begin{frame}{Поставленные задачи}
+\begin{itemize}
+\item Рассмотреть существующие языки и среды исполнения смарт-контрактов
+\vfill
+\item Разработать интерфейс для взаимодействия произвольной среды исполнения смарт-контрактов с Hyperledger Iroha
+\vfill
+\item Реализовать взаимодействие одной из сред исполнения с Hyperledger Iroha
+\vfill
+\item Провести тестирование
+\end{itemize}
+
+\end{frame} 
+
+\begin{frame}{Интерфейс взаимодействия с Hyperledger Iroha}
+Транзакция формируется с помощью команд управления.
+\vfill
+Нужна новая команда для работы со средой исполнения смарт-контрактов. 
+Используется паттерн проектирования “Фабричный метод”.
+
+\end{frame} 
+
+\begin{frame}{Результаты}
+\begin{itemize}
+\item Выполнен обзор существующих сред исполнения и языков смарт-контрактов (статья на SYRCoSE)
+\vfill
+\item Разработан интерфейс для взаимодействия произвольной среды исполнения смарт-контрактов с Hyperledger Iroha
+\vfill
+\item Виртуальная машина Hyperledger Burrow внедрена
+\vfill
+\item Написаны модульные тесты 
+\end{itemize}
+\end{frame} 
+
+\begin{frame}{Использованные технологии}
+\begin{block}{Языки}
+	C++, Go, Solidity
+\end{block}
+\vfill
+\begin{block}{Библиотеки}
+	Boost, Protobuf, RapidJSON, GTest, libpq
+\end{block}
+\vfill
+\begin{block}{Дополнительно}
+	PostgreSQL, EVM, CMake, Git, Docker
+\end{block}
+
+\end{frame} 
+
+\end{document}

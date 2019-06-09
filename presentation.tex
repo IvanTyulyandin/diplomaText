@@ -1,9 +1,10 @@
 \documentclass[hyperref={pdfpagelabels=false}]{beamer}
-\hypersetup{unicode=true}
 \usepackage{amssymb,cancel,cite,color,cmap,float,graphicx,lmodern,listings,
   multirow,pifont,pgfplots,txfonts,tikz,wrapfig,xcolor,yfonts}
 
-\usepackage[T2A]{fontenc}
+\usepackage{paratype}
+\renewcommand*\familydefault{\sfdefault}
+\usepackage[T1, T2A]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[english,russian]{babel}
 
@@ -35,7 +36,8 @@
 }
 %\textswab
 \setbeamertemplate{frametitle}[default][center]
- 
+
+\begin{document}
   
 \title[Смарт-контракты для Hyperledger Iroha]{Проектирование и реализация среды исполнения смарт-контрактов для блокчейна Hyperledger Iroha}  
 \author[И. Тюляндин]{Иван Тюляндин\\%
@@ -44,7 +46,6 @@
 Рецензент: ген.\,дир. “Сорамитсу Лабс” К.\,Р.\,Салахиев%
 } 
 \date{\today} 
-\begin{document}
 {
 \setbeamertemplate{navigation symbols}{}
 \frame[noframenumbering,plain]{
@@ -59,25 +60,27 @@
 \end{block}
 \vfill
 \begin{block}{Hyperledger Iroha}
-Open-source блокчейн консорциума Hyperledger (https://github.com/hyperledger/iroha).
+Open-source блокчейн консорциума Hyperledger ({\color{blue}{https://github.com/hyperledger/iroha}}).
 \end{block}
 \end{frame} 
 
 \begin{frame}{Цель}
-Цель данной работы — создать прототип Hyperledger Iroha с возможностью выполнения смарт-контрактов.
+\begin{block}{Цель}
+Инфраструктура поддержки среды исполнения смарт-контрактов для блокчейна Hyperledger Iroha.
+\end{block}
 \vfill
 Смарт-контракты повысят доверие внутри сети и степень автоматизации договоров.
 \end{frame} 
 
 \begin{frame}{Поставленные задачи}
 \begin{itemize}
-\item Рассмотреть существующие языки и среды исполнения смарт-контрактов
+\item Выполнить обзор существующих языков и сред исполнения смарт-контрактов
 \vfill
-\item Разработать интерфейс для взаимодействия произвольной среды исполнения смарт-контрактов с Hyperledger Iroha
+\item Разработать архитектуру и программный интерфейс для взаимодействия среды исполнения смарт-контрактов с Hyperledger Iroha
 \vfill
 \item Реализовать взаимодействие одной из сред исполнения с Hyperledger Iroha
 \vfill
-\item Провести тестирование
+\item Провести тестирование добавленной среды исполнения смарт-контрактов
 \end{itemize}
 
 \end{frame} 
@@ -85,20 +88,82 @@ Open-source блокчейн консорциума Hyperledger (https://github.
 \begin{frame}{Интерфейс взаимодействия с Hyperledger Iroha}
 Транзакция формируется с помощью команд управления.
 \vfill
-Нужна новая команда для работы со средой исполнения смарт-контрактов. 
-Используется паттерн проектирования “Фабричный метод”.
+Добавлена новая команда для работы со средой исполнения смарт-контрактов. 
+Используется шаблон проектирования “Фабричный метод”.
 
+\end{frame} 
+
+\begin{frame}{Диаграмма выполнения смарт-контракта}
+\begin{figure}
+% 0.44 to remove tex warning about overfull
+\includegraphics[scale=0.44]{interaction.png}
+\end{figure}
+\end{frame} 
+
+\begin{frame}{Необходимая функциональность для интеграции}
+\begin{itemize}
+\item Передача параметров по сети
+\vfill
+\item Чтение и запись актуального состояния через базу данных
+\vfill
+\item Формирование данных на входе и выходе в соответствии с форматом среды исполнения
+\end{itemize}
+\end{frame} 
+
+\begin{frame}{Обзор существующих сред исполнения и языков смарт-контрактов}
+Известные — Ethereum (Solidity, Viper), Bitcoin. Параметры сравнения: парадигма, Тьюринг-полнота, экосистема и другие.
+\vfill
+Обзорная статья \emph{A Survey of Smart Contract Safety and Programming Languages} для публикации в Трудах ИСП РАН.
+\vfill
+Ethereum --- самая развитая платформа.
+\end{frame} 
+
+\begin{frame}{Среда исполнения}
+\begin{block}{Hyperledger Burrow}
+Реализация блокчейна со смарт-контрактами из Ethereum ({\color{blue}{https://github.com/hyperledger/burrow}}).
+\end{block}
+\vfill
+\begin{block}{Преимущества}
+\begin{itemize}
+\item Содержит Ethereum Virtual Machine
+\vfill
+\item Поддерживается Hyperledger
+\vfill
+\item Есть примеры интегрирования (Hyperledger Fabric и Hyperledger Seth)
+\end{itemize}
+\end{block}
+
+\end{frame} 
+
+\begin{frame}{Тестирование}
+\begin{block}{Команда управления}
+\begin{itemize}
+\item Валидация данных
+\vfill
+\item Операции для передачи по сети
+\end{itemize}
+\end{block}
+\vfill
+\begin{block}{Взаимодействие с историей блокчейна}
+\begin{itemize}
+\item Запись
+\vfill
+\item Чтение
+\vfill
+\item Вызов функции с параметрами
+\end{itemize}
+\end{block}
 \end{frame} 
 
 \begin{frame}{Результаты}
 \begin{itemize}
-\item Выполнен обзор существующих сред исполнения и языков смарт-контрактов (статья на SYRCoSE)
+\item Выполнен обзор существующих сред исполнения и языков смарт-контрактов, обзорная статья принята для публикации в сборнике трудов ИСП РАН
 \vfill
-\item Разработан интерфейс для взаимодействия произвольной среды исполнения смарт-контрактов с Hyperledger Iroha
+\item Разработаны архитектура и программный интерфейс для взаимодействия среды исполнения смарт-контрактов с Hyperledger Iroha
 \vfill
-\item Виртуальная машина Hyperledger Burrow внедрена
+\item Реализовано взаимодействие Hyperledger Iroha и среды исполнения смарт-контрактов проекта Hyperledger Burrow
 \vfill
-\item Написаны модульные тесты 
+\item Проведено модульное и интеграционное тестирование
 \end{itemize}
 \end{frame} 
 
@@ -108,7 +173,7 @@ Open-source блокчейн консорциума Hyperledger (https://github.
 \end{block}
 \vfill
 \begin{block}{Библиотеки}
-	Boost, Protobuf, RapidJSON, GTest, libpq
+	Libpq, GTest, Boost, Protobuf, RapidJSON
 \end{block}
 \vfill
 \begin{block}{Дополнительно}

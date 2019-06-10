@@ -45,7 +45,7 @@
 Консультант: к.\,ф.-м.\,н. Д.\,А.\,Березун\\%
 Рецензент: ген.\,дир. “Сорамитсу Лабс” К.\,Р.\,Салахиев%
 } 
-\date{\today} 
+\date{11 июня 2019} 
 {
 \setbeamertemplate{navigation symbols}{}
 \frame[noframenumbering,plain]{
@@ -80,23 +80,23 @@ Open-source блокчейн консорциума Hyperledger ({\color{blue}{h
 \vfill
 \item Реализовать взаимодействие одной из сред исполнения с Hyperledger Iroha
 \vfill
-\item Провести тестирование добавленной среды исполнения смарт-контрактов
+\item Провести тестирование добавленной функциональности
 \end{itemize}
 
 \end{frame} 
 
-\begin{frame}{Интерфейс взаимодействия с Hyperledger Iroha}
+\begin{frame}{Интерфейс взаимодействия}
 Транзакция формируется с помощью команд управления.
 \vfill
 Добавлена новая команда для работы со средой исполнения смарт-контрактов. 
-Используется шаблон проектирования “Фабричный метод”.
+Основная задача --- передать необходимые параметры. 
 
 \end{frame} 
 
 \begin{frame}{Диаграмма выполнения смарт-контракта}
 \begin{figure}
 % 0.44 to remove tex warning about overfull
-\includegraphics[scale=0.44]{interaction.png}
+\includegraphics[scale=0.44]{inter.png}
 \end{figure}
 \end{frame} 
 
@@ -125,11 +125,17 @@ Ethereum --- самая развитая платформа.
 \vfill
 \begin{block}{Преимущества}
 \begin{itemize}
-\item Содержит Ethereum Virtual Machine
+\item Интерфейс для работы с Ethereum Virtual Machine
 \vfill
-\item Поддерживается Hyperledger
+\item Поддерживается сообществом Hyperledger
 \vfill
 \item Есть примеры интегрирования (Hyperledger Fabric и Hyperledger Seth)
+\end{itemize}
+\end{block}
+\vfill
+\begin{block}{Недостатки}
+\begin{itemize}
+\item Специфичная предметная область 
 \end{itemize}
 \end{block}
 
@@ -140,11 +146,11 @@ Ethereum --- самая развитая платформа.
 \begin{itemize}
 \item Валидация данных
 \vfill
-\item Операции для передачи по сети
+\item Операции по переводу в другой формат
 \end{itemize}
 \end{block}
 \vfill
-\begin{block}{Взаимодействие с историей блокчейна}
+\begin{block}{Взаимодействие со средой исполнения}
 \begin{itemize}
 \item Запись
 \vfill

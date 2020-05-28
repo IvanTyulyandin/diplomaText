@@ -146,7 +146,7 @@
         \presetkeys[#1]{mytitle}{
           university = {SAINT PETERSBURG STATE UNIVERSITY},
           faculty = {},
-          city = {Saint-Petersburg},
+          city = {Saint Petersburg},
           year = {\the\year},
           type = {diploma}
         }{}

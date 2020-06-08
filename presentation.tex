@@ -1,0 +1,139 @@
+% 
+% sudo apt install texlive-fonts-extra
+% may be requered sudo apt install cm-super
+% 
+% compile with pdflatex
+%
+
+\documentclass[hyperref={pdfpagelabels=false}]{beamer}
+\usepackage{amssymb,cancel,cite,color,cmap,float,graphicx,lmodern,listings,
+  multirow,pifont,pgfplots,txfonts,tikz,wrapfig,xcolor,yfonts}
+
+\usepackage{paratype}
+\renewcommand*\familydefault{\sfdefault}
+\usepackage[T1, T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+
+% some weird help from tex compiler
+\pgfplotsset{compat=1.15}
+
+\usetikzlibrary{arrows,automata,positioning,shapes,shapes.multipart}
+\usetheme{Copenhagen}
+
+\setbeamertemplate{navigation symbols}{}
+%\addtobeamertemplate{number}{}{%
+%    \usebeamerfont{footline}%
+%    \usebeamercolor[black]{footline}%
+%    \hspace{1em}%
+%    \insertframenumber%/\inserttotalframenumber
+%}
+
+%\expandafter\def\expandafter\insertshorttitle\expandafter{%
+%  \insertshorttitle\hfill%
+%  \insertframenumber}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+    \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\addtobeamertemplate{navigation symbols}{}{
+  \usebeamerfont{footline}
+  \fontsize{14pt}{14}\selectfont
+  \usebeamercolor[black]{footline}
+  \hspace{1em}
+  \circled{${\insertframenumber}$}
+}
+%\textswab
+\setbeamertemplate{frametitle}[default][center]
+
+\begin{document}
+  
+\title[Специализация алгоритма Витерби]{Специализация алгоритма Витерби на GPGPU скрытой марковской моделью}  
+\author[И. Тюляндин]{Иван Тюляндин\\%
+Научный руководитель: к.\,ф.-м.\,н., доцент С.\,В. Григорьев\\%
+Консультант: к.\,ф.-м.\,н. Д.\,А.\,Березун\\%
+} 
+\date{9 июня 2020} 
+{
+\setbeamertemplate{navigation symbols}{}
+\frame[noframenumbering,plain]{
+\maketitle
+} 
+}
+
+
+\begin{frame}{Предметная область(1)}
+	\begin{block}{Задача гомологичности}
+	Поиск эволюционных предков у исследуемого протеина и изученных протеинов.
+	\end{block}
+	\vfill
+	\begin{block}{Скрытые марковские модели и алгоритм Витерби}
+	Протеин кодируется в виде символьной последовательности.
+	Скрытые марковские модели описывают профиль семейства гомологичных 
+	протеинов.
+	Алгоритм Витерби позволяет по последовательности протеина проверить его принадлежность к семейству протеинов.
+	\end{block}
+\end{frame} 
+
+
+\begin{frame}{Предметная область(2)}
+	\begin{block}{Специализация} 
+	Параметры делятся на две группы: статические и динамические.\\
+	Задача специализатора --- оптимизировать вычисления программы P, 
+	зависящие от статических параметров, и сгенерировать программу P1 с 
+	динамическими параметрами.
+	Результаты P и P1 должны быть равны.
+	\end{block}
+	\vfill
+	\begin{block}{Специализация GPGPU}
+	Идея: перенос статических данных в код уменьшит промахи кэша данных на 
+	GPGPU.
+	\end{block}
+\end{frame} 
+
+
+\begin{frame}{Цель}
+\begin{block}{Цель}
+Исследовать применимость специализации алгоритма Витерби, реализованного на 
+GPGPU
+\end{block}
+\end{frame}
+
+
+\begin{frame}{Поставленные задачи}
+\begin{itemize}
+	\item сделать обзор предметной области и существующих решений задачи 
+		гомологичности;
+	\vfill
+	\item реализовать GPGPU версию алгоритма Витерби;
+	\vfill
+	\item написать специализатор алгоритма Витерби на СММ;
+	\vfill
+	\item провести сравнительный анализ производительности специализированной 
+		программы с неспециализированной версией и существующими решениями.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Текущие результаты}
+\begin{itemize}
+	\item сделан обзор предметной области:
+	\begin{itemize}	
+		\item задача гомологичности, СММ и алгоритм Витерби;
+		\item технологии программирования гетерогенных систем NVIDIA CUDA, 		
+			OpenCL, SYCL;
+		\item техника специализации (в частности, для GPGPU кода);
+		\item имеющиеся аналоги HMMer и CUDAMPF с вероятностным фильтром MSV
+	\end{itemize}
+	\vfill
+	\item реализация алгоритмов для замеров
+		\begin{itemize}
+			\item чтение форматов fasta и hmm;
+			\item однопоточная версия MSV алгоритма Витерби;
+			\item многопоточная версия MSV дописывается;
+		\end{itemize}
+\end{itemize}
+\vfill
+Далее планируется перейти к написанию специализатора и проведению 
+сравнительного анализа производительности.
+\end{frame} 
+
+\end{document}

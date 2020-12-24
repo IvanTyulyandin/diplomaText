@@ -3,7 +3,7 @@
 % который в момент своего создания был идентичен классу, установленному на сервере.
 % Для того, чтобы им воспользоваться, замените matmex-diploma на matmex-diploma-custom
 % Если вы работаете исключительно в Papeeria то мы настоятельно рекомендуем пользоваться
-% классом matmex-diploma, поскольку он будет автоматически обновляться по мере внесения корректив
+% классом matmex-diploma, поскольку он будет автоматически обновляться по м⎄ере внесения корректив
 %
 
 % По умолчанию используется шрифт 14 размера. Если нужен 12-й шрифт, уберите опцию [14pt]
@@ -15,6 +15,7 @@
 \newcommand\name[1]{\textsc{#1}}
 \newcommand\achtung[1]{{\color{red}#1}}
 
+\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \hypersetup{
@@ -25,6 +26,8 @@
 }
 % code listings settings
 \usepackage{listings}
+% replace Listing in code caption
+\renewcommand{\lstlistingname}{Листинг}
 \usepackage{xcolor}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -68,7 +71,7 @@
 % Если англоязычная титульная страница не нужна, то ее можно просто удалить.
 \filltitle{ru}{
     chair              = {Программная инженерия\\ Кафедра системного программирования},
-    title              = {Специализация алгоритма Витерби на GPGPU скрытой марковской моделью},
+    title              = {Исследование применимости специализации алгоритма Витерби скрытой марковской моделью},
     % Здесь указывается тип работы. Возможные значения:
     %   coursework - Курсовая работа
     %   diploma - Диплом специалиста
@@ -76,9 +79,9 @@
     %   bachelor - Диплом бакалавра
     type               = {master},
     author             = {Тюляндин Иван Владимирович},
-    supervisorPosition = {к.\,ф.-м.\,н., доцент},
+    supervisorPosition = {к.\,ф.-м.\,н., доцент кафедры информатики\\},
     supervisor         = {С.\,В. Григорьев},
-    consultantPosition   = {программист ООО "Интеллиджей Лабс"\\ к.\,ф.-м.\,н.},
+    consultantPosition   = {к.\,ф.-м.\,н., ст.преп. кафедры современного программирования факультета МКН\\},
     consultant           = {Д.\,А. Березун},
     reviewerPosition   = {},
     reviewer           = {}
@@ -87,19 +90,19 @@
 %   city               = {Санкт-Петербург},
 %   year               = {2013}
 }
-\filltitle{en}{
-    chair              = {Software Engineering},
-    title              = {Specialization of GPGPU implemented Viterbi algorithm with hidden Markov model},
-    author             = {Ivan Tyulyandin},
-    supervisorPosition = {Assistant Professor, PhD},
-    supervisor         = {Semyon Grigorev},
-    consultantPosition   = {IntelliJ Labs Co. Ltd developer\\ PhD},
-    consultant           = {Daniil Berezun},
-    reviewerPosition   = {},
-    reviewer           = {}
-    % chairHeadPosition  = {professor},
-    % chairHead          = {Christobal Junta},
-}
+%\filltitle{en}{
+%    chair              = {Software Engineering},
+%    title              = {Specialization of GPGPU implemented Viterbi algorithm with hidden Markov model},
+%    author             = {Ivan Tyulyandin},
+%    supervisorPosition = {Assistant Professor, PhD},
+%    supervisor         = {Semyon Grigorev},
+%    consultantPosition   = {IntelliJ Labs Co. Ltd developer\\ PhD},
+%    consultant           = {Daniil Berezun},
+%    reviewerPosition   = {},
+%    reviewer           = {}
+%    % chairHeadPosition  = {professor},
+%    % chairHead          = {Christobal Junta},
+%}
 \maketitle
 \tableofcontents
 % У введения нет номера главы

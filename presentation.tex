@@ -97,7 +97,7 @@
 Научный руководитель: к.\,ф.-м.\,н., доцент кафедры информатики С.\,В. Григорьев\\%
 Консультант: к.\,ф.-м.\,н., старший преподаватель кафедры современного программирования Д.\,А.\,Березун\\%
 } 
-\date{19 декабря 2020} 
+\date{28 декабря 2020} 
 {
 \setbeamertemplate{navigation symbols}{}
 \frame[noframenumbering,plain]{
@@ -121,10 +121,10 @@
 \begin{block}{Скрытая марковская модель}
 \begin{itemize}
 	\item St[N] — множество состояний
-	\item Obs[K] — множество наблюдений
+	\item Obs[K] — множество событий
 	\item Pr\_b[N] — вероятности состояний быть начальными
 	\item Tr[N][N] — вероятности переходов между состояниями
-	\item Em[N][K] — вероятности наблюдений в состояниях
+	\item Em[N][K] — вероятности событий в состояниях
 \end{itemize}
 \end{block}
 \end{frame}
@@ -170,18 +170,18 @@ function Viterbi(St, Obs, Pr_b, Tr, Em, O)
 \end{frame}
 
 
-%\begin{frame}{Поставленные задачи}
-%\begin{itemize}
-%	\item Сделать обзор предметной области и существующих решений 
-%		задачи гомологичности
-%	\vfill
-%	\item Реализовать неспециализированную версию алгоритма Витерби
-%	\vfill
-%	\item Написать специализатор алгоритма Витерби на СММ
-%	\vfill
-%	\item Провести сравнительный анализ производительности
-%\end{itemize}
-%\end{frame}
+\begin{frame}{Поставленные задачи}
+\begin{itemize}
+	\item Сделать обзор предметной области и существующих решений 
+		задачи гомологичности
+	\vfill
+	\item Реализовать неспециализированную версию алгоритма Витерби
+	\vfill
+	\item Написать специализатор алгоритма Витерби на СММ
+	\vfill
+	\item Провести сравнительный анализ производительности
+\end{itemize}
+\end{frame}
 
 
 \begin{frame}{Специализация GPGPU}
@@ -191,7 +191,7 @@ function Viterbi(St, Obs, Pr_b, Tr, Em, O)
 \end{block}
 \vfill
 Специализированный наивный поиск подстроки в строке быстрее в 8 раз. 
-Статья  А. Тюрина, С. Григорьева и Д. Березуна \href{https://www.researchgate.net/publication/339368918_Optimizing_GPU_programs_by_partial_evaluation}{Optimizing GPU programs by partial evaluation}
+Статья  А.В. Тюрина, С.В. Григорьева и Д.А. Березуна \href{https://www.researchgate.net/publication/339368918_Optimizing_GPU_programs_by_partial_evaluation}{Optimizing GPU programs by partial evaluation}
 \vfill
 Стандарт OpenCL
 \vfill

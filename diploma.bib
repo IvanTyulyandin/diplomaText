@@ -1,17 +1,94 @@
-@MISC{MSV_Eddy,
-    author = {Sean R. Eddy},
-    title = {Accelerated Profile HMM Searches},
-    year = {2011}
+@article{part_eval_GPU,
+	author = {Tyurin, Aleksey and Berezun, Daniil and Grigorev, Semyon},
+	year = {2020},
+	month = {02},
+	pages = {431-432},
+	title = {Optimizing GPU programs by partial evaluation},
+	doi = {10.1145/3332466.3374507}
+}
+
+@article{MSV_Eddy,
+	issn = {1553-7358},
+	journal = {PLoS computational biology},
+	pages = {e1002195--e1002195},
+	volume = {7},
+	publisher = {Public Library of Science},
+	number = {10},
+	year = {2011},
+	title = {Accelerated Profile HMM Searches},
+	address = {United States},
+	author = {Eddy, Sean R}
 }
 
 @article{Viterbi,
-	author={A. {Viterbi}},
-	journal={IEEE Transactions on Information Theory}, 
-	title={Error bounds for convolutional codes and an asymptotically optimum decoding algorithm}, 
-	year={1967},
-	volume={13},
-	number={2},
-	pages={260-269}
+  author={A. {Viterbi}},
+  journal={IEEE Transactions on Information Theory},
+  title={Error bounds for convolutional codes and an asymptotically optimum decoding algorithm},
+  year={1967},
+  volume={13},
+  number={2},
+  pages={260-269},
+  doi={10.1109/TIT.1967.1054010}
+}
+
+@inbook{Rabiner_VA,
+	author = {Rabiner, Lawrence R.},
+	title = {A Tutorial on Hidden Markov Models and Selected Applications in Speech Recognition},
+	year = {1990},
+	isbn = {1558601244},
+	publisher = {Morgan Kaufmann Publishers Inc.},
+	address = {San Francisco, CA, USA},
+	booktitle = {Readings in Speech Recognition},
+	pages = {267–296},
+	numpages = {30}
+}
+
+@article{Eddy_HMM,
+	author = {Eddy, Sean R},
+	title = "{What is a hidden Markov model?}",
+	journal = {Nature Biotechnology},
+	volume = {22},
+	pages = {1315-1316},
+	url = {https://doi.org/10.1038/nbt1004-1315}
+}
+
+@book{Jones_spec,
+	author = {Jones, Neil and Gomard, Carsten and Sestoft, Peter},
+	year = {1993},
+	title = {Partial Evaluation and Automatic Program Generation},
+}
+
+@INPROCEEDINGS{LA_Viterbi,
+  author={E. {Theodosis} and P. {Maragos}},
+  booktitle={2018 IEEE 19th International Workshop on Signal Processing Advances in Wireless Communications (SPAWC)},
+  title={Analysis of the Viterbi Algorithm Using Tropical Algebra and Geometry},
+  year={2018},
+  pages={1-5},
+  doi={10.1109/SPAWC.2018.8445777}
+}
+
+@article{Part_eval_pat_mat_str,
+	title = {Partial evaluation of pattern matching in strings},
+	journal = {Information Processing Letters},
+	volume = {30},
+	number = {2},
+	pages = {79-86},
+	year = {1989},
+	author = {Charles Consel and Olivier Danvy}
+}
+
+@inproceedings{part_eval_ray_tracing,
+  title={Partial Evaluation Applied to Ray Tracing},
+  author={P. H. Andersen},
+  year={1996}
+}
+
+@Booklet{part_eval_logic,
+  author = {Chiaki Sakama and Hien Nguyen and Taisuke Sato and Katsumi Inoue},
+  title = {Partial Evaluation of Logic Programs in Vector Spaces},
+  howpublished = {EasyChair Preprint no. 172},
+  doi = {10.29007/9d61},
+  year = {EasyChair, 2018}
 }
 
 @article{cudampf,
@@ -21,121 +98,6 @@
 	journal = {BMC bioinformatics}
 }
 
-@article{HMM_Eddy,
-    author = {Eddy, S R},
-    title = "{Profile hidden Markov models.}",
-    journal = {Bioinformatics},
-    volume = {14},
-    number = {9},
-    pages = {755-763},
-    year = {1998}
-}
-
-@book{Jones_spec,
-	author = {Jones, Neil and Gomard, Carsten and Sestoft, Peter},
-	year = {1993},
-	title = {Partial Evaluation and Automatic Program Generation},
-}
-
-@online{CUDA,
-	title={NVIDIA CUDA},
-	url = {https://developer.nvidia.com/cuda-zone},
-	urldate = {2020-05-24}
-}
-
-@online{OpenCL,
-	title={OpenCL},
-	url = {https://www.khronos.org/opencl/},
-	urldate = {2020-05-24}
-}
-
-@online{OpenCL_spec,
-	title={OpenCL specification},
-	url = {https://www.khronos.org/registry/OpenCL/specs/opencl-1.2.pdf},
-	urldate = {2020-05-24}
-}
-
-@online{SYCL,
-	title={SYCL},
-	url = {https://www.khronos.org/sycl/},
-	urldate = {2020-05-24}
-}
-
-@online{SPIR-V,
-	title={SPIR-V},
-	url = {https://www.khronos.org/spir/},
-	urldate = {2020-05-24}
-}
-
-@inproceedings{LLVM,
-	author={C. {Lattner} and V. {Adve}},
-	booktitle={International Symposium on Code Generation and Optimization, 2004. CGO 2004.}, 
-	title={LLVM: a compilation framework for lifelong program analysis   transformation}, 
-	year={2004},
-	volume={},
-	number={},
-	pages={75-86}
-}
-
-@online{DPC,
-	title={DPC++},
-	url = {https://github.com/intel/llvm},
-	urldate = {2020-05-24}
-}
-
-@online{ComputeCpp,
-	title={ComputeCpp},
-	url = {https://www.codeplay.com/products/computesuite/computecpp},
-	urldate = {2020-05-24}
-}
-
-@online{triSYCL,
-	title={triSYCL},
-	url = {https://github.com/triSYCL/triSYCL},
-	urldate = {2020-05-24}
-}
-
-@online{hipSYCL,
-	title={hipSYCL},
-	url = {https://github.com/illuhad/hipSYCL},
-	urldate = {2020-05-24}
-}
-
-@online{HMMer,
-	title={HMMer},
-	url = {https://github.com/EddyRivasLab/hmmer},
-	urldate = {2020-06-01}
-}
-
-@article{Pfam,
-    author = {El-Gebali, Sara and Mistry, Jaina and Bateman, Alex and Eddy, Sean R and Luciani, Aurélien and Potter, Simon C and Qureshi, Matloob and Richardson, Lorna J and Salazar, Gustavo A and Smart, Alfredo and Sonnhammer, Erik L L and Hirsh, Layla and Paladin, Lisanna and Piovesan, Damiano and Tosatto, Silvio C E and Finn, Robert D},
-    title = "{The Pfam protein families database in 2019}",
-    journal = {Nucleic Acids Research},
-    volume = {47},
-    number = {D1},
-    pages = {D427-D432},
-    year = {2018},
-    month = {10}
-}
-
-@inproceedings{part_eval_GPU,
-	author = {Tyurin, Aleksey and Berezun, Daniil and Grigorev, Semyon},
-	year = {2020},
-	month = {02},
-	pages = {431-432},
-	title = {Optimizing GPU programs by partial evaluation},
-	doi = {10.1145/3332466.3374507}
-}
-
-@article{Eddy_CHMM,
-	author = {Eddy, Sean R},
-	title = "{What is a hidden Markov model?}",
-	journal = {Nature Biotechnology},
-	volume = {22},
-	pages = {1315-1316},
-	url = {https://doi.org/10.1038/nbt1004-1315}
-}
-
 @article{SuiteSparse,
 	author = {Davis, Timothy A.},
 	title = "{Algorithm 1000: SuiteSparse:GraphBLAS: Graph Algorithms in the Language of Sparse Linear Algebra}",
@@ -143,35 +105,74 @@
 	url = {https://doi.org/10.1145/3322125},
 }
 
-@INPROCEEDINGS{LA_Viterbi,
-  author={E. {Theodosis} and P. {Maragos}},
-  booktitle={2018 IEEE 19th International Workshop on Signal Processing Advances in Wireless Communications (SPAWC)}, 
-  title={Analysis of the Viterbi Algorithm Using Tropical Algebra and Geometry}, 
-  year={2018},
-  pages={1-5},
-  doi={10.1109/SPAWC.2018.8445777}
+@book{LA_ML,
+	author = {Aggarwal, Charu},
+	year = {2020},
+	month = {01},
+	pages = {},
+	title = {Linear Algebra and Optimization for Machine Learning: A Textbook},
+	isbn = {978-3-030-40343-0},
+	doi = {10.1007/978-3-030-40344-7}
 }
 
-@article{SQL_spec,
-	author = {Sharygin, E. and Buchatskiy, R. and Zhuykov, R. and Sher, A.},
-	year = {2017},
-	month = {11},
-	pages = {353-365},
-	title = {Query compilation in PostgreSQL by 	specialization of the DBMS source code},
-	volume = {43},
-	journal = {Programming and Computer Software},
-	doi = {10.1134/S0361768817060068}
+@book{LA_CV,
+	author = {Szeliski, Richard},
+	title = {Computer Vision: Algorithms and Applications},
+	year = {2010},
+	isbn = {1848829345},
+	publisher = {Springer-Verlag},
+	address = {Berlin, Heidelberg},
+	edition = {1st}
 }
 
-@TECHREPORT{RT_spec,
-	author = {Peter Holst Andersen},
-	title = {Partial Evaluation Applied to Ray Tracing},
-	year = {1995}
+@book{LA_STAT,
+	author = {Gentle, James},
+	title = {Numerical Linear Algebra for Applications in
+Statistics},
+	year = {1998},
+	publisher = {Springer-Verlag}
 }
 
-@online{GraphBLAS,
-	author = {Buluç A. and Mattson T. and McMillan S. and Moreira J. and Yang C},
-	title = {The GraphBLAS C API Specification. Version 1.3.0.},
-	url = {http://people.eecs.berkeley.edu/~aydin/GraphBLAS_API_C_v13.pdf},
-	urldate = {28.12.2020}
+@article{Viterbi_credit,
+	title = {A novel corporate credit rating system based on Student’s-t hidden Markov models},
+	journal = {Expert Systems with Applications},
+	volume = {53},
+	pages = {87-105},
+	year = {2016},
+	author = {Anastasios Petropoulos and Sotirios P. Chatzis and Stylianos Xanthopoulos}
+}
+
+@article{GraphBLAS,
+	title={Design of the GraphBLAS API for C},
+	author={Buluç, Aydin and Mattson, Tim and McMillan, Scott and Moreira, E. José and Yang, Carl},
+	journal={IPDPS Workshops},
+	pages={643--652},
+	year={2017}
+}
+
+@misc{GraphBLAST,
+      title={GraphBLAST: A High-Performance Linear Algebra-based Graph Framework on the GPU}, 
+      author={Carl Yang and Aydin Buluc and John D. Owens},
+      year={2020},
+      eprint={1908.01407},
+      archivePrefix={arXiv},
+      primaryClass={cs.DC}
+}
+
+@online{GBTL,
+	title={GraphBLAS Template Library (GBTL), v. 3.0},
+	url = {https://github.com/cmu-sei/gbtl},
+	urldate = {2021-12-02}
+}
+
+@article{Pfam,
+    author = {Mistry, Jaina and Chuguransky, Sara and Williams, Lowri and Qureshi, Matloob and Salazar, Gustavo A and Sonnhammer, Erik L L and Tosatto, Silvio C E and Paladin, Lisanna and Raj, Shriya and Richardson, Lorna J and Finn, Robert D and Bateman, Alex},
+    title = "{Pfam: The protein families database in 2021}",
+    journal = {Nucleic Acids Research},
+    volume = {49},
+    number = {D1},
+    pages = {D412-D419},
+    year = {2020},
+    month = {10},
+    issn = {0305-1048}
 }

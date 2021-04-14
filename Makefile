@@ -1,4 +1,4 @@
-MAIN=diploma
+MAIN=0_diploma
 SOURCE=$(MAIN).tex
 
 all: clean

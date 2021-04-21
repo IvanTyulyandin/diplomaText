@@ -16,7 +16,24 @@
 \newcommand\achtung[1]{{\color{red}#1}}
 
 \usepackage{amssymb,amsmath,cancel,cite,color,cmap,float,
-	graphicx, multirow,pgfplots,tikz,wrapfig,xcolor}
+	graphicx, multirow,pgfplots,tikz,wrapfig,xcolor,caption, 
+	subcaption}
+
+% tikz settings
+\usetikzlibrary{shapes,arrows,positioning}
+\tikzset{
+	node distance=5cm,
+	every state/.style={ 
+		semithick,
+		fill=gray!10
+	},
+	every edge/.style={
+		draw,
+		->,>=stealth, 
+		auto,
+		semithick
+	}
+}
 \pgfplotsset{compat=1.3}
 
 \usepackage{graphicx}
@@ -86,26 +103,26 @@
     supervisor         = {С.\,В. Григорьев},
     consultantPosition   = {к.\,ф.-м.\,н., ст.преп. кафедры современного программирования факультета МКН\\},
     consultant           = {Д.\,А. Березун},
-    reviewerPosition   = {},
-    reviewer           = {}
+    reviewerPosition   = {Санкт-Петербургский Политехнический Университет, старший преподаватель\\},
+    reviewer           = {М. Х. Ахин}
 %   university         = {Санкт-Петербургский Государственный Университет},
 %   faculty            = {Математико-механический факультет},
 %   city               = {Санкт-Петербург},
 %   year               = {2013}
 }
-%\filltitle{en}{
-%    chair              = {Software Engineering},
-%    title              = {Specialization of GPGPU implemented Viterbi algorithm with hidden Markov model},
-%    author             = {Ivan Tyulyandin},
-%    supervisorPosition = {Assistant Professor, PhD},
-%    supervisor         = {Semyon Grigorev},
-%    consultantPosition   = {IntelliJ Labs Co. Ltd developer\\ PhD},
-%    consultant           = {Daniil Berezun},
-%    reviewerPosition   = {},
-%    reviewer           = {}
-%    % chairHeadPosition  = {professor},
-%    % chairHead          = {Christobal Junta},
-%}
+\filltitle{en}{
+    chair              = {Software Engineering},
+    title              = {Viterbi algorithm specialization with hidden Markov model},
+    author             = {Ivan Tyulyandin},
+    supervisorPosition = {Assistant Professor, PhD\\},
+    supervisor         = {Semyon Grigorev},
+    consultantPosition   = {Department of Mathematics and Computer Science, senior lecturer, PhD\\},
+    consultant           = {Daniil Berezun},
+    reviewerPosition   = {Peter the Great St.Petersburg Polytechnic University, senior lecturer\\},
+    reviewer           = {Akhin Marat}
+    % chairHeadPosition  = {professor},
+    % chairHead          = {Christobal Junta},
+}
 \maketitle
 \tableofcontents
 % У введения нет номера главы

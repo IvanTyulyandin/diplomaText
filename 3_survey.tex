@@ -195,6 +195,21 @@ t(p) =
 последовательности $Obs$, будут находиться преобразованные 
 вероятности быть в определённом состоянии СММ при условии 
 наблюдения последовательности событий \emph{Obs}.
+Псевдокод алгоритма приведен на листинге~\ref{LA_Viterbi}.
+\begin{lstlisting}[caption={Псевдокод алгоритма Витерби, выраженного методами линейной алгебры}, label=LA_Viterbi, escapeinside={(*}{*)}]
+function Viterbi(HMM, Obs)
+	lo = length(Obs)
+	// (*\textcolor{codegreen}{Столбец для результатов}*)
+	Probs[1][HMM.N]
+
+	// (*\textcolor{codegreen}{Все матричные умножения выполняются в полукольце Min-plus}*)
+	Probs = P(Obs[1]) (*$\times$*) HMM.B
+	
+	for i = 2..lo
+		Probs = P(Obs[i]) (*$\times$*) (HMM.T)(*$^{\top}$*) (*$\times$*) Probs
+		
+	return Probs
+\end{lstlisting}
 
 
 \subsection{Существующие реализации алгоритма Витерби}

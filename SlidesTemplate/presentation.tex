@@ -1,0 +1,599 @@
+\documentclass{beamer}
+\usepackage{beamerthemesplit}
+\usepackage{wrapfig}
+\usetheme{SPbGU}
+\usepackage{pdfpages}
+\usepackage{amsmath,bm,hyperref,listings,xcolor}
+\usepackage{amssymb,amsmath,cancel,cite,color,cmap,float,
+	graphicx, multirow,pgfplots,tikz,wrapfig,xcolor}
+% weird tex compiler support
+\pgfplotsset{compat=1.16}
+
+%\hypersetup{
+%    colorlinks = true,
+%    anchorcolor = blue,
+%}
+
+
+\usepackage{amsmath}
+\usepackage{cmap} 
+\usepackage[T2A]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{indentfirst}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage[noend]{algpseudocode}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{fancyvrb}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+\tikzset{
+	node distance=5cm,
+	every state/.style={ 
+		semithick,
+		fill=gray!10
+	},
+	every edge/.style={
+		draw,
+		->,>=stealth, 
+		auto,
+		semithick
+	}
+}
+
+\newcommand\name[1]{\textsc{#1}}
+
+\def\CC{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
+
+\usepackage[figurename=Рис., tablename=Таблица]{caption}
+\setbeamertemplate{caption}[numbered]
+\usepackage{graphicx}
+
+% code listings settings
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{orange}{RGB}{179,36,31}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{orange},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+%    numbers=left,       
+    numbersep=5pt,      
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstdefinelanguage{my_pseudo} {
+	morekeywords={function, for, return, let, 
+		in, while, if, then, else, elif},
+	sensitive=false,
+	morecomment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]",
+	xleftmargin=.2\textwidth, xrightmargin=.2\textwidth
+}
+
+\lstset{style=mystyle}
+\lstset{language=my_pseudo}
+\lstset{
+    escapeinside={(*}{*)}
+}
+
+% backup settings
+\newcommand{\backupbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+
+\beamertemplatenavigationsymbolsempty
+
+
+\title[Специализация алгоритма Витерби]{Исследование применимости специализации алгоритма Витерби скрытой марковской моделью}
+\institute[СПбГУ]{
+Санкт-Петербургский Государственный Университет\\
+Кафедра системного программирования}
+
+% То, что в квадратных скобках, отображается в левом нижнем углу.
+\author[Иван Тюляндин]{
+\textbf{Автор}: Иван Владимирович Тюляндин, 19.М07-мм
+\\
+\textbf{Руководитель}: к.ф.-м.н., доцент С.В. Григорьев
+\\
+\textbf{Консультант}: к.ф.-м.н., ст. преп. СПбГУ Д.А. Березун
+\\
+\textbf{Рецензент}: ст. преп. СПбПУ М.Х. Ахин}
+
+\date{29 апреля 2021}
+
+\begin{document}
+{
+% Лого университета или организации, отображается в шапке титульного листа
+\begin{frame}[plain,noframenumbering]
+\begin{center}
+  \includegraphics[width=1.7cm]{SPbGU_Logo.png}
+\vspace{-3pt}
+\hspace{-10pt}
+\titlepage
+\end{center}
+
+\end{frame}
+}
+
+
+\begin{frame}[fragile]
+	\frametitle{Введение}
+	\begin{itemize}
+		\item Алгоритмы методами линейной алгебры (ЛА) на больших данных
+		\vfill
+		\item Любые улучшения критичны
+			\begin{itemize}
+				\vfill
+				\item оборудование
+				\vfill
+				\item изменение алгоритма
+			\end{itemize}
+		\vfill	
+		\item Часть данных может быть зафиксирована
+		\vfill	
+		\item Применение специализации
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Специализация}
+	Два типа параметров
+	\begin{itemize}
+		\item статичные --- т.е. зафиксированные
+		\item динамические --- все остальные
+	\end{itemize}
+	\vfill
+	\begin{block}{Специализация}
+		Техника преобразования программ для оптимизации использования статических данных с целью уменьшить количество вычислений
+	\end{block}
+	\vfill
+	Применение специализации к алгоритма методами ЛА не изучено
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Алгоритм Витерби}
+	\begin{itemize}
+		\item применяется во многих областях
+		\vfill
+		\item выражается методами ЛА
+		\vfill
+		\item два параметра: скрытая марковская модель (СММ) и последовательность наблюдений
+		\vfill
+		\item на практике СММ зафиксирована, меняется только последовательность
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Цель и задачи}
+	\begin{block}{Цель работы}
+		Исследовать применимость специализации к алгоритму Витерби, который описан методами ЛА,
+при условии, что СММ является статическим параметром
+	\end{block}
+	\vfill
+\begin{itemize}
+	\item сделать обзор предметной области
+		\begin{itemize}
+			\item рассмотреть алгоритм Витерби и его существующие реализации
+			\item описать технику специализации
+		\end{itemize}
+	\item разработать специализированный алгоритм Витерби, реализовать и протестировать корректность реализации
+	\item провести эксперименты по сравнению производительности специализированного алгоритма с неспециализированной версией и существующими реализациями
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Скрытая марковская модель}
+	\begin{block}{Скрытая марковская модель}
+		Вероятностный детерминированный автомат, каждое состояние которого создает наблюдение
+		\begin{itemize}
+			\item $\mathit{S_{1..N}}$ --- $N$ состояний
+			\item $\mathit{O_{1..K}}$ --- $K$ возможных наблюдений
+			\item $\mathit{B_{1..N}}$ --- вероятности для состояний $\mathit{S_{1..N}}$ быть стартовыми 
+			\item $\mathit{T_{1..N, 1..N}}$ --- матрица переходов, $\mathit{T_{i,j}}$ --- это вероятность перехода из $\mathit{S_{i}}$ в $\mathit{S_{j}}$
+			\item $\mathit{E_{1..N, 1..K}}$ --- матрица наблюдений, $\mathit{E_{i,j}}$ --- это вероятность создать наблюдение 
+$\mathit{O_{j}}$ в состоянии $\mathit{S_{i}}$
+		\end{itemize}
+	\end{block}
+	\vfill
+Алгоритм Витерби, выраженный с помощью полукольца \emph{Min-plus}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Полукольцо \emph{Min-plus}}
+\begin{itemize}
+	\item Переопределяем '+' как \emph{min}, '*' как  \emph{plus}, $\infty$ и $0$ как нейтральные элементы
+	\vfill
+	Пример матричного умножения
+\[
+  \begin{pmatrix}
+    0 & 1 \\
+    +\infty & 2
+  \end{pmatrix}
+  \times
+  \begin{pmatrix}
+    3 \\
+    4
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    min(0 + 3, 1 + 4) \\
+    min(+\infty + 3, 2 + 4)
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    3 \\
+    6
+  \end{pmatrix}
+\]
+\vfill
+\item Для всех вероятностей \emph{p} из СММ:
+\[  t(p) =
+    \begin{cases}
+      p > 0: & -1 * log_{2}(p))\\
+      p = 0: & +\infty
+    \end{cases}       
+\]
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Алгоритм Витерби методами ЛА}
+	Для всех наблюдений $o$:
+\[
+  P(o) =
+  \begin{pmatrix}
+    t(E[1,o]) & \hdots & +\infty \\
+    \vdots & \ddots & \vdots\\
+    +\infty & \hdots & t(E[N,o]) \\
+  \end{pmatrix}
+\]
+	\vfill
+	\begin{block}{Алгоритм Витерби методами ЛА}
+		Обработка первого наблюдения из последовательности $Obs$:
+		\[\mathit{Probs}_{1} = P(\mathit{Obs[1]}) \times B\]
+		Оставшаяся часть $Obs$:
+	\[\mathit{Probs}_{t} = P(\mathit{Obs[t]}) \times T^{\top} \times \mathit{Probs}_{t - 1}\]	
+	\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Алгоритм специализации}
+	Как использовать данные СММ?
+	\vfill
+	Для всех наблюдений $o$ можно вычислить: 
+	\[P(\mathit{o}) \times B \text{, далее как } PB(o)\]
+	\[P(\mathit{o}) \times T^{\top} \text{, далее как } PT(o)\] 
+	\vfill
+	\begin{block}{Алгоритм Витерби первого уровня специализации}
+		\[\mathit{Probs}_{1} = PB(Obs[1])\]
+	
+		\[\mathit{Probs}_{t} = PT(Obs[t]) \times \mathit{Probs}_{t - 1}\]
+
+	\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Алгоритм специализации}
+	Матричное умножение ассоциативно
+	\vfill
+	Обработка $o_1$ и $o_2$, если столбец $Probs_0$ известен?
+\begin{align}
+  \mathit{Probs}_{2} &= \mathit{PT}(\mathit{o}_{2}) \times \mathit{Probs}_{1}\nonumber\\
+  &= \mathit{PT}(\mathit{o}_{2}) \times (\mathit{PT}(\mathit{o}_{1}) \times \mathit{Probs}_{0}) \nonumber\\
+  & =(\mathit{PT}(\mathit{o}_{2}) \times \mathit{PT}(\mathit{o}_{1})) \times \mathit{Probs}_{0}
+\end{align}
+\vfill
+Можно вычислить
+$\mathit{PT}(\mathit{o}_{2}) \times \mathit{PT}(\mathit{o}_{1})$. 
+Два наблюдения одним умножением, т.е. второй уровень!
+\vfill
+Этот подход можно применить для повышения уровня
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Анализ операций}
+	Пусть длина $\mathit{Obs}$ обозначается как $lo$, количество состояний СММ как $N$, количество возможных наблюдений СММ как $K$
+	\vfill
+	\begin{block}{Неспециализированная версия}
+		Матричных умножений: \[1 + 2 \ast (\mathit{lo} - 1)\]
+	\end{block}
+	\vfill
+	\begin{block}{Специализированная версия уровня $M$}
+		Матричных умножений: \[\mathit{(lo - 1) / M + (lo - 1)\ mod\ M}\]
+		Дополнительной памяти: $\mathit{K^{M}}$ матриц, каждая $N \times N$ 
+	\end{block}
+	
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Реализация}
+	Выбор библиотек
+	\begin{itemize}
+		\item Часто СММ разреженные
+		\item Нужно и для CPU, и для GPGPU
+	\end{itemize}
+	\vfill
+	Библиотеки \name{SuiteSparse:GraphBLAS} и \name{CUSP}
+	\vfill
+	Проведено тестирование
+	\begin{itemize}
+		\item на корректность реализации алгоритма Витерби
+		\item на сохранение семантики
+		\item отсутствие утечек памяти
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Эксперименты}
+	\begin{itemize}	
+		\item Ubuntu 20.04, Intel Core i7-4790 3.60 
+GHz, NVIDIA GeForce GTX 1030, 32 Gb RAM
+		\vfill
+		\item Сравнение специализированной версии против неспециализированной и \name{CUDAMPF}
+		\vfill
+		\item 24 СММ из репозитория \name{CUDAMPF}, три набора данных
+		\vfill 
+		\item Медиана из 100 запусков
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Эксперименты}
+\begin{figure}[!h]
+	\begin{tikzpicture}
+		\begin{axis}[
+	  title={},
+          axis x line=bottom,
+          axis y line=left,
+          xlabel={Кол-во состояний в СММ},
+          ylabel={Время, мс},
+          legend pos=north west]
+        	\addplot[mark=square,red,thick] table[x=states,y=cudampf] {../3500_bench.dat};
+        	\addplot[mark=square,blue,thick] table[x=states,y=ns] {../3500_median_bench.dat};
+        	\addplot[mark=square,green,thick] table[x=states,y=s1] {../3500_median_bench.dat};
+        	\addplot[mark=square,magenta,thick] table[x=states,y=s2] {../3500_median_bench.dat};
+        	\addplot[mark=square,black,thick] table[x=states,y=s3] {../3500_median_bench.dat};
+        	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
+      		\end{axis}
+    \end{tikzpicture}
+    \caption{3 x 3500 наблюдений, меньше --- лучше}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Эксперименты}
+\begin{figure}[!h]
+	\begin{tikzpicture}
+		\begin{axis}[
+	  title={},
+          axis x line=bottom,
+          axis y line=left,
+          xlabel={Кол-во состояний в СММ},
+          ylabel={Время, мс},
+          legend pos=north west]
+        	\addplot[mark=square,red,thick] table[x=states,y=cudampf] {../7000_bench.dat};
+        	\addplot[mark=square,blue,thick] table[x=states,y=ns] {../7000_median_bench.dat};
+        	\addplot[mark=square,green,thick] table[x=states,y=s1] {../7000_median_bench.dat};
+        	\addplot[mark=square,magenta,thick] table[x=states,y=s2] {../7000_median_bench.dat};
+        	\addplot[mark=square,black,thick] table[x=states,y=s3] {../7000_median_bench.dat};
+        	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
+      		\end{axis}
+    \end{tikzpicture}
+    \caption{3 x 7000 наблюдений, меньше --- лучше}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Эксперименты}
+\begin{figure}[!h]
+	\begin{tikzpicture}
+		\begin{axis}[
+	  title={},
+          axis x line=bottom,
+          axis y line=left,
+          xlabel={Кол-во состояний в СММ},
+          ylabel={Время, мс},
+          legend pos=north west]
+        	\addplot[mark=square,red,thick] table[x=states,y=cudampf] {../covid_bench.dat};
+        	\addplot[mark=square,blue,thick] table[x=states,y=ns] {../covid_median_bench.dat};
+        	\addplot[mark=square,green,thick] table[x=states,y=s1] {../covid_median_bench.dat};
+        	\addplot[mark=square,magenta,thick] table[x=states,y=s2] {../covid_median_bench.dat};
+        	\addplot[mark=square,black,thick] table[x=states,y=s3] {../covid_median_bench.dat};
+        	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
+      		\end{axis}
+    \end{tikzpicture}
+    \caption{16 последовательностей из БД \name{PFAM}, меньше --- лучше}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Эксперименты}
+\begin{figure}[!h]
+	\begin{tikzpicture}
+		\begin{axis}[
+	  title={},
+          axis x line=bottom,
+          axis y line=left,
+          xlabel={Кол-во состояний в СММ},
+          ylabel={Время, мс},
+          legend pos=north west]
+        \addplot[mark=square,green,thick] table[x=states,y=st1] {../3500_bench.dat};
+        \addplot[mark=square,magenta,thick] table[x=states,y=st2] {../3500_bench.dat};
+        \addplot[mark=square,black,thick] table[x=states,y=st3] {../3500_bench.dat};                  \legend{ур. 1 спец., ур. 2 спец., ур. 3 спец.}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Время, затраченное на специализацию, меньше --- лучше}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Текущие результаты}
+\begin{itemize}
+	\item Выполнен обзор предметной области
+	\item Реализованы и протестированы две реализации специализированного алгоритма Витерби
+		\begin{itemize}
+			\item \name{Sui\-te\-Spar\-se:Graph\-BLAS} для выполнения на CPU
+			\item \name{CUSP} для выполнения на GPGPU
+		\end{itemize}
+	\item Проведены эксперименты на данных из репозитория \name{CUDAMPF}. 
+Специализированная версия с использованием 
+\name{Sui\-te\-Spar\-se:Graph\-BLAS} в 1,5 раза 
+производительнее \name{CUDAMPF}.
+\vfill
+\name{SEIM 2021}: статья \emph{Viterbi Algorithm Specialization Using Linear Algebra} 
+\vfill
+Необходимо провести эксперименты на \name{CUSP} и эксперименты на большем количестве последовательностей
+\end{itemize}
+\end{frame}
+
+
+% -------------BACKUP-SLIDES--------
+
+\appendix
+\backupbegin
+
+\begin{frame}[fragile]
+	\frametitle{Пример специализации: возведение в степень}
+\begin{lstlisting}[escapeinside={(*}{*)}]
+function f(x, n)
+  if n == 0 then 1
+  elif even(x) then f(x, n/2)^2
+  else x * f(x, (n-1)/2)^2
+\end{lstlisting}
+	\vfill
+	Предположим $\mathit{n = 5}$, т.е. это статический параметр
+	\vfill
+\begin{lstlisting}[escapeinside={(*}{*)}]
+function f_spec(x) = x * (x^2)^2
+\end{lstlisting}
+	\vfill
+	Специализация бесполезна, если $x$ статический параметр
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{СММ: пример}
+	\centering
+\begin{figure}
+	\begin{tikzpicture}
+		\node (H) {
+			\begin{tabular}{|c|c|}
+				\hline
+				\multicolumn{2}{|c|} H \\
+				\hline
+				A & 0.2 \\
+				C & 0.3 \\
+				T & 0.3 \\
+				G & 0.2 \\
+				\hline
+			\end{tabular}
+		};
+		\node[right of=H] (L) {
+			\begin{tabular}{|c|c|}
+				\hline
+				\multicolumn{2}{|c|} L \\
+				\hline
+				A & 0.3 \\
+				C & 0.2 \\
+				T & 0.2 \\
+				G & 0.3 \\
+				\hline
+			\end{tabular}
+		};
+		\draw (H) edge[loop above] node {\tt 0.5} (H);
+		\draw (H) edge[bend left] node {\tt 0.5} (L);
+		\draw (L) edge[loop above] node {\tt 0.6} (L);
+		\draw (L) edge[bend left] node {\tt 0.4} (H);
+	\end{tikzpicture}
+	\label{fig:HMM}
+\end{figure}
+\begin{figure}
+	\begin{tabular}{c}
+		Вероятности быть стартовым состоянием\\
+		\begin{tabular}{|c|c|}
+			\hline
+			H & L \\
+			\hline
+			0.5 & 0.5 \\
+			\hline
+		\end{tabular} \\
+	\end{tabular}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{О повышении уровня}
+	Обработка $o_{t-2}$, $o_{t-1}$ и $o_t$, если столбец $Probs_{t-3}$ известен?
+	\vfill
+\begin{align}
+  \mathit{Probs}_{t} = \mathit{PT}(o_t) \times \mathit{PT}(o_{t-1}) \times \mathit{PT}(o_{t-2}) \times \mathit{Probs}_{t - 3} 
+\label{lvl_3}
+\end{align}
+	\vfill
+	Все произведения $PT(o)$ могут быть вычислены по данным из СММ
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Общее время выполнения}
+	\begin{table}[t!]
+  \centering
+  \begin{tabular}{||c c c c c c||} 
+    \hline
+    & CUDAMPF & Initial & 1-level & 2-level & 3-level\\ [0.5ex] 
+    \hline\hline
+    3 x 3500 & 7907 & 11365 & 8747 & \textbf{5332} & 18858 \\ 
+    \hline
+    3 x 7000 & \textbf{8862} & 22641 & 17342 & 9630 & 21356 \\
+    \hline
+    Real world & 8347 & 17064 & 12956 & \textbf{7311} & 19581 \\
+    \hline
+  \end{tabular}
+  \caption{Общее время выполнения (специализация и выполнение специализированного алгоритма Витерби), мс}
+  \label{runtime}
+\end{table}
+\end{frame}
+
+
+\backupend
+
+\end{document}

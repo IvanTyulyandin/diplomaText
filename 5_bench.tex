@@ -8,8 +8,8 @@
 
 \subsection{Описание набора данных и оборудования}
 Эксперименты выполнялись на рабочей станции с ОС Ubuntu 
-20.04, процессором \name{AMD Ryzen} 1600, видеокартой \name{NVI\-DIA GeForce GTX 1070} и 16 Гб 
-оперативной памяти.
+20.04, процессором \name{Intel Core i7-6700} с 4-мя ядрами по 3.40ГГц, 64 Гб оперативной памяти, видеокартой 
+\name{NVI\-DIA GeForce GTX 1070} c 8 Гб памяти.
 
 В качестве тестового набора были взяты СММ из репозитория  
 проекта \name{CUDAMPF}.
@@ -53,113 +53,121 @@
 
 Для реализации с использованием \name{SuiteSparse:GraphBLAS} были получены следующие результаты, представленные на рисунках~\ref{3500_SS},~\ref{7000_SS},~\ref{RW_SS},
 ~\ref{50_SS},~\ref{Spec_time_SS} и в таблице~\ref{runtime}.
-\begin{figure}[!b]
-\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-     	  title={},
-          axis x line=bottom,
-          axis y line=left,
-          xlabel={Кол-во состояний в СММ},
-          ylabel={Время, мс},
-          legend pos=outer north east]
-        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_3_3500.dat};
-        	\addplot[mark=square,blue,thick] table[x=States,y=GraphBLAS] {Viterbi_bench_emit_3_3500_20.dat};
-        	\addplot[mark=square,green,thick] table[x=States,y=GraphBLAS_spec_1] {Viterbi_spec_bench_emit_3_3500_20.dat};
-        	\addplot[mark=square,magenta,thick] table[x=States,y=GraphBLAS_spec_2] {Viterbi_spec_bench_emit_3_3500_20.dat};
-        	\addplot[mark=square,black,thick] table[x=States,y=GraphBLAS_spec_3] {Viterbi_spec_bench_emit_3_3500_20.dat};
-        	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      		\end{axis}
-    \end{tikzpicture}
-    \caption{GraphBLAS, 3 x 3500 наблюдений, меньше --- лучше}
-\label{3500_SS}
-\end{figure}
 
-\begin{figure}[h!]
-\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-	      title={},
-          axis x line=bottom,
-          axis y line=left,
-          xlabel={Кол-во состояний в СММ},
-          ylabel={Время, мс},
-          legend pos=outer north east]
-        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_3_7000.dat};
-        	\addplot[mark=square,blue,thick] table[x=States,y=GraphBLAS] {Viterbi_bench_emit_3_7000_20.dat};
-        	\addplot[mark=square,green,thick] table[x=States,y=GraphBLAS_spec_1] {Viterbi_spec_bench_emit_3_7000_20.dat};
-        	\addplot[mark=square,magenta,thick] table[x=States,y=GraphBLAS_spec_2] {Viterbi_spec_bench_emit_3_7000_20.dat};
-        	\addplot[mark=square,black,thick] table[x=States,y=GraphBLAS_spec_3] {Viterbi_spec_bench_emit_3_7000_20.dat};
-    	    \legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      		\end{axis}
-    \end{tikzpicture}
-    \caption{GraphBLAS, 3 х 7000 наблюдений, меньше --- лучше}
-\label{7000_SS}
-\end{figure}
+\begin{tabular}{l|c}%
+    \bfseries Кол-во состояний & \bfseries Ур. 1
+    \csvreader[separator=tab,head to column names]{Viterbi_spec_bench_emit_3_3500_20.dat}{}% use head of csv as column names
+    {\\\hline\csvcoli & \csvcolii}% specify your coloumns here
+\end{tabular}
 
-\begin{figure}[h!]
-\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-	  	  title={},
-          axis x line=bottom,
-          axis y line=left,
-          xlabel={Кол-во состояний в СММ},
-          ylabel={Время, мс},
-          legend pos=outer north east]
-        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_covid.dat};
-        	\addplot[mark=square,blue,thick] table[x=States,y=GraphBLAS] {Viterbi_bench_covid-19.dat};
-        	\addplot[mark=square,green,thick] table[x=States,y=GraphBLAS_spec_1] {Viterbi_spec_bench_covid-19.dat};
-        	\addplot[mark=square,magenta,thick] table[x=States,y=GraphBLAS_spec_2] {Viterbi_spec_bench_covid-19.dat};
-        	\addplot[mark=square,black,thick] table[x=States,y=GraphBLAS_spec_3] {Viterbi_spec_bench_covid-19.dat};
-      	    \legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      	\end{axis}
-    \end{tikzpicture}
-    \caption{GraphBLAS, набор данных из БД \name{PFAM}, меньше --- лучше}
-\label{RW_SS}    
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-	      title={},
-          axis x line=bottom,
-          axis y line=left,
-          xlabel={Кол-во состояний в СММ},
-          ylabel={Время, мс},
-          legend pos=outer north east]
-        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_50_3500.dat};
-        	\addplot[mark=square,blue,thick] table[x=States,y=GraphBLAS] {Viterbi_bench_emit_50_3500_20.dat};
-        	\addplot[mark=square,green,thick] table[x=States,y=GraphBLAS_spec_1] {Viterbi_spec_bench_emit_50_3500_20.dat};
-        	\addplot[mark=square,magenta,thick] table[x=States,y=GraphBLAS_spec_2] {Viterbi_spec_bench_emit_50_3500_20.dat};
-        	\addplot[mark=square,black,thick] table[x=States,y=GraphBLAS_spec_3] {Viterbi_spec_bench_emit_50_3500_20.dat};
-    	    \legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      		\end{axis}
-    \end{tikzpicture}
-    \caption{GraphBLAS, 50 х 3500 наблюдений, меньше --- лучше}
-\label{50_SS}
-\end{figure}
-
-
-\begin{figure}[h!]
-\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-		  title={},
-          axis x line=bottom,
-          axis y line=left,
-          xlabel={Кол-во состояний в СММ},
-          ylabel={Время, мс},
-          legend pos=outer north east]
-        \addplot[mark=square,green,thick] table[x=States,y=GraphBLAS_spec_1_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};
-        \addplot[mark=square,magenta,thick] table[x=States,y=GraphBLAS_spec_2_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};
-        \addplot[mark=square,black,thick] table[x=States,y=GraphBLAS_spec_3_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};                  				\legend{ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      \end{axis}
-    \end{tikzpicture}
-    \caption{GraphBLAS, время на специализацию, меньше --- лучше}
-\label{Spec_time_SS}
-\end{figure}
+%\begin{figure}[!b]
+%\centering
+%	\begin{tikzpicture}
+%		\begin{axis}[
+%     	  title={},
+%          axis x line=bottom,
+%          axis y line=left,
+%          xlabel={Кол-во состояний в СММ},
+%          ylabel={Время, мс},
+%          legend pos=outer north east]
+%        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_3_3500.dat};
+%        	\addplot[mark=square,blue,thick] table[x=States,y=GraphBLAS] {Viterbi_bench_emit_3_3500_20.dat};
+%        	\addplot[mark=square,green,thick] table[x=States,y=GraphBLAS_spec_1] {Viterbi_spec_bench_emit_3_3500_20.dat};
+%        	\addplot[mark=square,magenta,thick] table[x=States,y=GraphBLAS_spec_2] {Viterbi_spec_bench_emit_3_3500_20.dat};
+%%        	\addplot[mark=square,black,thick] table[x=States,y=GraphBLAS_spec_3] {Viterbi_spec_bench_emit_3_3500_20.dat};
+%        	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец.}
+%      		\end{axis}
+%    \end{tikzpicture}
+%    \caption{GraphBLAS, 3 x 3500 наблюдений, меньше --- лучше}
+%\label{3500_SS}
+%\end{figure}
+%
+%\begin{figure}[h!]
+%\centering
+%	\begin{tikzpicture}
+%		\begin{axis}[
+%	      title={},
+%          axis x line=bottom,
+%          axis y line=left,
+%          xlabel={Кол-во состояний в СММ},
+%          ylabel={Время, мс},
+%          legend pos=outer north east]
+%        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_3_7000.dat};
+%        	\addplot[mark=square,blue,thick] table[x=States,y=GraphBLAS] {Viterbi_bench_emit_3_7000_20.dat};
+%        	\addplot[mark=square,green,thick] table[x=States,y=GraphBLAS_spec_1] {Viterbi_spec_bench_emit_3_7000_20.dat};
+%        	\addplot[mark=square,magenta,thick] table[x=States,y=GraphBLAS_spec_2] {Viterbi_spec_bench_emit_3_7000_20.dat};
+%%        	\addplot[mark=square,black,thick] table[x=States,y=GraphBLAS_spec_3] {Viterbi_spec_bench_emit_3_7000_20.dat};
+%    	    \legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец.}
+%      		\end{axis}
+%    \end{tikzpicture}
+%    \caption{GraphBLAS, 3 х 7000 наблюдений, меньше --- лучше}
+%\label{7000_SS}
+%\end{figure}
+%
+%\begin{figure}[h!]
+%\centering
+%	\begin{tikzpicture}
+%		\begin{axis}[
+%	  	  title={},
+%          axis x line=bottom,
+%          axis y line=left,
+%          xlabel={Кол-во состояний в СММ},
+%          ylabel={Время, мс},
+%          legend pos=outer north east]
+%        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_covid.dat};
+%        	\addplot[mark=square,blue,thick] table[x=States,y=GraphBLAS] {Viterbi_bench_covid-19.dat};
+%        	\addplot[mark=square,green,thick] table[x=States,y=GraphBLAS_spec_1] {Viterbi_spec_bench_covid-19.dat};
+%        	\addplot[mark=square,magenta,thick] table[x=States,y=GraphBLAS_spec_2] {Viterbi_spec_bench_covid-19.dat};
+%%        	\addplot[mark=square,black,thick] table[x=States,y=GraphBLAS_spec_3] {Viterbi_spec_bench_covid-19.dat};
+%      	    \legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец.}
+%      	\end{axis}
+%    \end{tikzpicture}
+%    \caption{GraphBLAS, набор данных из БД \name{PFAM}, меньше --- лучше}
+%\label{RW_SS}    
+%\end{figure}
+%
+%\begin{figure}[h!]
+%\centering
+%	\begin{tikzpicture}
+%		\begin{axis}[
+%	      title={},
+%          axis x line=bottom,
+%          axis y line=left,
+%          xlabel={Кол-во состояний в СММ},
+%          ylabel={Время, мс},
+%          ymin=0,
+%          legend pos=outer north east]
+%        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_50_3500.dat};
+%        	\addplot[mark=square,blue,thick] table[x=States,y=GraphBLAS] {Viterbi_bench_emit_50_3500_20.dat};
+%        	\addplot[mark=square,green,thick] table[x=States,y=GraphBLAS_spec_1] {Viterbi_spec_bench_emit_50_3500_20.dat};
+%        	\addplot[mark=square,magenta,thick] table[x=States,y=GraphBLAS_spec_2] {Viterbi_spec_bench_emit_50_3500_20.dat};
+%%        	\addplot[mark=square,black,thick] table[x=States,y=GraphBLAS_spec_3] {Viterbi_spec_bench_emit_50_3500_20.dat};
+%    	    \legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец.}
+%      		\end{axis}
+%    \end{tikzpicture}
+%    \caption{GraphBLAS, 50 х 3500 наблюдений, меньше --- лучше}
+%\label{50_SS}
+%\end{figure}
+%
+%
+%\begin{figure}[h!]
+%\centering
+%	\begin{tikzpicture}
+%		\begin{axis}[
+%		  title={},
+%          axis x line=bottom,
+%          axis y line=left,
+%          xlabel={Кол-во состояний в СММ},
+%          ylabel={Время, мс},
+%          legend pos=outer north east]
+%        \addplot[mark=square,green,thick] table[x=States,y=GraphBLAS_spec_1_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};
+%        \addplot[mark=square,magenta,thick] table[x=States,y=GraphBLAS_spec_2_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};
+%%        \addplot[mark=square,black,thick] table[x=States,y=GraphBLAS_spec_3_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};                  				\legend{ур. 1 спец., ур. 2 спец.}
+%      \end{axis}
+%    \end{tikzpicture}
+%    \caption{GraphBLAS, время на специализацию, меньше --- лучше}
+%\label{Spec_time_SS}
+%\end{figure}
 
 Как можно видеть из графиков, с повышением уровня 
 специализации обработка набора последовательностей наблюдений 
@@ -201,133 +209,134 @@
 \end{table}
 
 При измерении специализированных реализаций с использованием библиотеки \name{CUSP} были получены следующие результаты, которые представлены на рисунках~\ref{3500_CUSP},~\ref{7000_CUSP},~\ref{RW_CUSP},~\ref{50_CUSP},~\ref{Spec_time_CUSP}, а также в таблице~\ref{runtime_CUSP}.
-\begin{figure}[h!]
-\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-     	  title={},
-          axis x line=bottom,
-          axis y line=left,
-          xlabel={Кол-во состояний в СММ},
-          ylabel={Время, мс},
-          legend pos=outer north east]
-        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_3_3500.dat};
-        	\addplot[mark=square,blue,thick] table[x=States,y=CUSP] {Viterbi_bench_emit_3_3500_20.dat};
-        	\addplot[mark=square,green,thick] table[x=States,y=CUSP_spec_1] {Viterbi_spec_bench_emit_3_3500_20.dat};
-        	\addplot[mark=square,magenta,thick] table[x=States,y=CUSP_spec_2] {Viterbi_spec_bench_emit_3_3500_20.dat};
-        	\addplot[mark=square,black,thick] table[x=States,y=CUSP_spec_3] {Viterbi_spec_bench_emit_3_3500_20.dat};
-        	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      		\end{axis}
-    \end{tikzpicture}
-    \caption{CUSP, 3 x 3500 наблюдений, меньше --- лучше}
-\label{3500_CUSP}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-	      title={},
-          axis x line=bottom,
-          axis y line=left,
-          xlabel={Кол-во состояний в СММ},
-          ylabel={Время, мс},
-          legend pos=outer north east]
-        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_3_7000.dat};
-        	\addplot[mark=square,blue,thick] table[x=States,y=CUSP] {Viterbi_bench_emit_3_7000_20.dat};
-        	\addplot[mark=square,green,thick] table[x=States,y=CUSP_spec_1] {Viterbi_spec_bench_emit_3_7000_20.dat};
-        	\addplot[mark=square,magenta,thick] table[x=States,y=CUSP_spec_2] {Viterbi_spec_bench_emit_3_7000_20.dat};
-        	\addplot[mark=square,black,thick] table[x=States,y=CUSP_spec_3] {Viterbi_spec_bench_emit_3_7000_20.dat};
-    	    \legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      		\end{axis}
-    \end{tikzpicture}
-    \caption{CUSP, 3 х 7000 наблюдений, меньше --- лучше}
-\label{7000_CUSP}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-	  	  title={},
-          axis x line=bottom,
-          axis y line=left,
-          xlabel={Кол-во состояний в СММ},
-          ylabel={Время, мс},
-          legend pos=outer north east]
-        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_covid.dat};
-        	\addplot[mark=square,blue,thick] table[x=States,y=CUSP] {Viterbi_bench_covid-19.dat};
-        	\addplot[mark=square,green,thick] table[x=States,y=CUSP_spec_1] {Viterbi_spec_bench_covid-19.dat};
-        	\addplot[mark=square,magenta,thick] table[x=States,y=CUSP_spec_2] {Viterbi_spec_bench_covid-19.dat};
-        	\addplot[mark=square,black,thick] table[x=States,y=CUSP_spec_3] {Viterbi_spec_bench_covid-19.dat};
-      	    \legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      	\end{axis}
-    \end{tikzpicture}
-    \caption{CUSP, набор данных из БД \name{PFAM}, меньше --- лучше}
-\label{RW_CUSP}    
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-     	  title={},
-          axis x line=bottom,
-          axis y line=left,
-          xlabel={Кол-во состояний в СММ},
-          ylabel={Время, мс},
-          legend pos=outer north east]
-        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_50_3500.dat};
-        	\addplot[mark=square,blue,thick] table[x=States,y=CUSP] {Viterbi_bench_emit_50_3500_20.dat};
-        	\addplot[mark=square,green,thick] table[x=States,y=CUSP_spec_1] {Viterbi_spec_bench_emit_50_3500_20.dat};
-        	\addplot[mark=square,magenta,thick] table[x=States,y=CUSP_spec_2] {Viterbi_spec_bench_emit_50_3500_20.dat};
-        	\addplot[mark=square,black,thick] table[x=States,y=CUSP_spec_3] {Viterbi_spec_bench_emit_50_3500_20.dat};
-        	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      		\end{axis}
-    \end{tikzpicture}
-    \caption{CUSP, 50 x 3500 наблюдений, меньше --- лучше}
-\label{50_CUSP}
-\end{figure}
-
-
-\begin{figure}[h!]
-\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-		  title={},
-          axis x line=bottom,
-          axis y line=left,
-          xlabel={Кол-во состояний в СММ},
-          ylabel={Время, мс},
-          legend pos=outer north east]
-        \addplot[mark=square,green,thick] table[x=States,y=CUSP_spec_1_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};
-        \addplot[mark=square,magenta,thick] table[x=States,y=CUSP_spec_2_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};
-        \addplot[mark=square,black,thick] table[x=States,y=CUSP_spec_3_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};                  				\legend{ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      \end{axis}
-    \end{tikzpicture}
-    \caption{CUSP, время на специализацию, меньше --- лучше}
-\label{Spec_time_CUSP}
-\end{figure}
-
-
-\begin{table}[t!]
-  \centering
-  \begin{tabular}{||c c c c c c||} 
-    \hline
-    & CUDAMPF & Initial & 1-level & 2-level & 3-level\\ [0.5ex] 
-    \hline\hline
-    3 x 3500 & \textbf{4854} & 422804 & 229836 & 129472 & 307650\\ 
-    \hline
-    3 x 7000 & \textbf{9209} & 806734 & 441478 & 247698 & 391031 \\
-    \hline
-    Данные из \name{PFAM} & \textbf{8796} & 605574 & 333534 & 191327 & 353298 \\
-    \hline
-    50 x 3500 & \textbf{103036} & 6709372 & 3617766 & 1951912 & 1604179 \\
-    \hline
-  \end{tabular}
-  \caption{CUSP, общее время обработки с учетом затрат времени на специализацию, мс}
-  \label{runtime_CUSP}
-\end{table}
+%\begin{figure}[h!]
+%\centering
+%	\begin{tikzpicture}
+%		\begin{axis}[
+%     	  title={},
+%          axis x line=bottom,
+%          axis y line=left,
+%          xlabel={Кол-во состояний в СММ},
+%          ylabel={Время, мс},
+%          legend pos=outer north east]
+%        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_3_3500.dat};
+%        	\addplot[mark=square,blue,thick] table[x=States,y=CUSP] {Viterbi_bench_emit_3_3500_20.dat};
+%        	\addplot[mark=square,green,thick] table[x=States,y=CUSP_spec_1] {Viterbi_spec_bench_emit_3_3500_20.dat};
+%%        	\addplot[mark=square,magenta,thick] table[x=States,y=CUSP_spec_2] {Viterbi_spec_bench_emit_3_3500_20.dat};
+%%        	\addplot[mark=square,black,thick] table[x=States,y=CUSP_spec_3] {Viterbi_spec_bench_emit_3_3500_20.dat};
+%        	\legend{CUDAMPF, неспец., ур. 1 спец.}
+%      		\end{axis}
+%    \end{tikzpicture}
+%    \caption{CUSP, 3 x 3500 наблюдений, меньше --- лучше}
+%\label{3500_CUSP}
+%\end{figure}
+%
+%\begin{figure}[h!]
+%\centering
+%	\begin{tikzpicture}
+%		\begin{axis}[
+%	      title={},
+%          axis x line=bottom,
+%          axis y line=left,
+%          xlabel={Кол-во состояний в СММ},
+%          ylabel={Время, мс},
+%          legend pos=outer north east]
+%        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_3_7000.dat};
+%        	\addplot[mark=square,blue,thick] table[x=States,y=CUSP] {Viterbi_bench_emit_3_7000_20.dat};
+%        	\addplot[mark=square,green,thick] table[x=States,y=CUSP_spec_1] {Viterbi_spec_bench_emit_3_7000_20.dat};
+%%        	\addplot[mark=square,magenta,thick] table[x=States,y=CUSP_spec_2] {Viterbi_spec_bench_emit_3_7000_20.dat};
+%%        	\addplot[mark=square,black,thick] table[x=States,y=CUSP_spec_3] {Viterbi_spec_bench_emit_3_7000_20.dat};
+%    	    \legend{CUDAMPF, неспец., ур. 1 спец.}
+%      		\end{axis}
+%    \end{tikzpicture}
+%    \caption{CUSP, 3 х 7000 наблюдений, меньше --- лучше}
+%\label{7000_CUSP}
+%\end{figure}
+%
+%\begin{figure}[h!]
+%\centering
+%	\begin{tikzpicture}
+%		\begin{axis}[
+%	  	  title={},
+%          axis x line=bottom,
+%          axis y line=left,
+%          xlabel={Кол-во состояний в СММ},
+%          ylabel={Время, мс},
+%          legend pos=outer north east]
+%        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_covid.dat};
+%        	\addplot[mark=square,blue,thick] table[x=States,y=CUSP] {Viterbi_bench_covid-19.dat};
+%        	\addplot[mark=square,green,thick] table[x=States,y=CUSP_spec_1] {Viterbi_spec_bench_covid-19.dat};
+%%        	\addplot[mark=square,magenta,thick] table[x=States,y=CUSP_spec_2] {Viterbi_spec_bench_covid-19.dat};
+%%        	\addplot[mark=square,black,thick] table[x=States,y=CUSP_spec_3] {Viterbi_spec_bench_covid-19.dat};
+%      	    \legend{CUDAMPF, неспец., ур. 1 спец.}
+%      	\end{axis}
+%    \end{tikzpicture}
+%    \caption{CUSP, набор данных из БД \name{PFAM}, меньше --- лучше}
+%\label{RW_CUSP}    
+%\end{figure}
+%
+%\begin{figure}[h!]
+%\centering
+%	\begin{tikzpicture}
+%		\begin{axis}[
+%     	  title={},
+%          axis x line=bottom,
+%          axis y line=left,
+%          xlabel={Кол-во состояний в СММ},
+%          ylabel={Время, мс},
+%          legend pos=outer north east]
+%        	\addplot[mark=square,red,thick] table[x=States,y=CUDAMPF] {bench_CUDAMPF_emit_50_3500.dat};
+%        	\addplot[mark=square,blue,thick] table[x=States,y=CUSP] {Viterbi_bench_emit_50_3500_20.dat};
+%        	\addplot[mark=square,green,thick] table[x=States,y=CUSP_spec_1] {Viterbi_spec_bench_emit_50_3500_20.dat};
+%%        	\addplot[mark=square,magenta,thick] table[x=States,y=CUSP_spec_2] {Viterbi_spec_bench_emit_50_3500_20.dat};
+%%        	\addplot[mark=square,black,thick] table[x=States,y=CUSP_spec_3] {Viterbi_spec_bench_emit_50_3500_20.dat};
+%        	\legend{CUDAMPF, неспец., ур. 1 спец.}
+%      		\end{axis}
+%    \end{tikzpicture}
+%    \caption{CUSP, 50 x 3500 наблюдений, меньше --- лучше}
+%\label{50_CUSP}
+%\end{figure}
+%
+%
+%\begin{figure}[h!]
+%\centering
+%	\begin{tikzpicture}
+%		\begin{axis}[
+%		  title={},
+%          axis x line=bottom,
+%          axis y line=left,
+%          xlabel={Кол-во состояний в СММ},
+%          ylabel={Время, мс},
+%          legend pos=outer north east]
+%        \addplot[mark=square,green,thick] table[x=States,y=CUSP_spec_1_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};
+%%        \addplot[mark=square,magenta,thick] table[x=States,y=CUSP_spec_2_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};
+%%        \addplot[mark=square,black,thick] table[x=States,y=CUSP_spec_3_prep] {Viterbi_spec_bench_emit_3_7000_20.dat};                  		
+%		\legend{ур. 1 спец.}
+%      \end{axis}
+%    \end{tikzpicture}
+%    \caption{CUSP, время на специализацию, меньше --- лучше}
+%\label{Spec_time_CUSP}
+%\end{figure}
+%
+%
+%\begin{table}[t!]
+%  \centering
+%  \begin{tabular}{||c c c c c c||} 
+%    \hline
+%    & CUDAMPF & Initial & 1-level & 2-level & 3-level\\ [0.5ex] 
+%    \hline\hline
+%    3 x 3500 & \textbf{4854} & 422804 & 229836 & 129472 & 307650\\ 
+%    \hline
+%    3 x 7000 & \textbf{9209} & 806734 & 441478 & 247698 & 391031 \\
+%    \hline
+%    Данные из \name{PFAM} & \textbf{8796} & 605574 & 333534 & 191327 & 353298 \\
+%    \hline
+%    50 x 3500 & \textbf{103036} & 6709372 & 3617766 & 1951912 & 1604179 \\
+%    \hline
+%  \end{tabular}
+%  \caption{CUSP, общее время обработки с учетом затрат времени на специализацию, мс}
+%  \label{runtime_CUSP}
+%\end{table}
 
 Исходя из полученных результатов, можно сделать вывод, что 
 как и в случае с реализациями с использованием 

@@ -1,15 +1,25 @@
 \section{Эксперименты}
 В данной главе описаны эксперименты по сравнению 
 производительности неспециализированного алгоритма Витерби 
-против специализированного алгоритма Витерби первого и второго уровня,
-а также по сравнению с реализацией из существующего решения \name{CUDAMPF} из 
+против специализированного алгоритма Витерби первого и 
+второго уровня,
+а также по сравнению с реализацией из существующего решения 
+\name{CUDAMPF} из 
 подраздела~\ref{lab:CUDAMPF}.
-Существующее решение \name{HMMer} из подраздела~\ref{lab:HMMer} не измерялось, так как согласно статье~\cite{cudampf} \name{CUDAMPF} превосходит \name{HMMer} более чем в 20 раз.
+Существующее решение \name{HMMer} из 
+подраздела~\ref{lab:HMMer} не измерялось, так как согласно 
+статье~\cite{cudampf} \name{CUDAMPF} превосходит \name{HMMer} 
+более чем в 20 раз.
+Эти существующие решения взяты из биоинформатики.
+Так как предложенный подход специализации не связан с 
+биоинформатикой, он может быть использован и в других 
+областях, где СММ часто является зафиксированным параметром.
 
 \subsection{Описание набора данных и оборудования}
+\label{sec:data}
 Эксперименты выполнялись на рабочей станции с ОС Ubuntu 
 20.04, четырехядерном процессоре \name{Intel Core i7-6700} с частотой 3.40 ГГц, 64 Гб оперативной памяти, видеокартой 
-\name{NVI\-DIA GeForce GTX 1070} c 8 Гб памяти.
+\name{NVI\-DIA GeForce GTX 1070} c 8 Гб памяти и 1920 ядрами \name{CUDA}.
 
 В качестве тестового набора были взяты СММ из репозитория  
 проекта \name{CUDAMPF}.
@@ -30,11 +40,12 @@
 либо добавляет новые переходы, если состояние не создавало 
 наблюдений.
 Количество возможных наблюдений, т.е. $K$, равно 20.
-На рисунке~\ref{HMM_mean} приведена график зависимости количества СММ, используемых в базе данных \name{PFAM} версии 34.0, от количества состояний в этих моделях.
+На рисунке~\ref{HMM_mean} приведен график зависимости количества СММ, используемых в базе данных \name{PFAM} версии 34.0, от количества состояний в этих моделях.
+Минимальное количество состояний равно 7, а максимальное 2998.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\columnwidth]{mean_HMM.png}
-  \caption{Распределение количества СММ от количества состояний}
+  \caption{График зависимости количества СММ от количества состояний в них}
   \label{HMM_mean}
 \end{figure}
 
@@ -45,7 +56,7 @@
 	\item 16 последовательностей размером от 38 до 7096;
 	\item 50 последовательностей по 3500 наблюдений.
 \end{itemize}
-Первый, второй и четвертый наборы были искусственно сгенерированы, в то время 
+Первый, второй и четвертый наборы были сгенерированы случайным образом, в то время 
 как третий был взят из БД \name{PFAM} и 
 приведен к формату \emph{ess}, который описан в 
 разделе~\ref{lab:formats}.
@@ -61,7 +72,7 @@
 Для реализации с использованием \name{SuiteSparse:GraphBLAS} были получены следующие результаты, представленные на рисунках~\ref{3500_SS},~\ref{7000_SS},~\ref{RW_SS},
 ~\ref{50_SS} и~\ref{Spec_time_SS}.
 Использовались специализированные версии первого и второго уровня, для специализированной версии третьего уровня не хватило оперативной памяти.
-Специализация второго уровня сильно медленнее других реализаций, поэтому она не отображена на рисунках.
+Специализация второго уровня сильно медленнее других реализаций, поэтому она не отображена на графиках.
 В таблице~\ref{runtime} указано общее время обработки с учётом затрат на специализацию.
 
 %\begin{tabular}{c|c|c|c|c}%
@@ -82,7 +93,7 @@
           legend pos=outer north east]
 		\addplot table [x=States, y=CUDAMPF, col sep=comma] {3_3500.csv};
 		\addplot table [x=States, y=GraphBLAS, col sep=comma] {3_3500.csv};
-		\addplot table [x=States, y=GraphBLAS_spec_1, col sep=comma] {3_3500.csv};
+		\addplot[color=green,mark=diamond*] table [x=States, y=GraphBLAS_spec_1, col sep=comma] {3_3500.csv};
 %		\addplot table [x=States, y=GraphBLAS_spec_2, col sep=comma] {3_3500.csv};
        	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец.}
 	\end{axis}
@@ -103,7 +114,7 @@
           legend pos=outer north east]
         \addplot table [x=States, y=CUDAMPF, col sep=comma] {3_7000.csv};
 		\addplot table [x=States, y=GraphBLAS, col sep=comma] {3_7000.csv};
-		\addplot table [x=States, y=GraphBLAS_spec_1, col sep=comma] {3_7000.csv};
+		\addplot[color=green,mark=diamond*] table [x=States, y=GraphBLAS_spec_1, col sep=comma] {3_7000.csv};
        	\legend{CUDAMPF, неспец., ур. 1 спец.}
 	\end{axis}
     \end{tikzpicture}
@@ -123,7 +134,7 @@
           legend pos=outer north east]
         \addplot table [x=States, y=CUDAMPF, col sep=comma] {covid-19.csv};
 		\addplot table [x=States, y=GraphBLAS, col sep=comma] {covid-19.csv};
-		\addplot table [x=States, y=GraphBLAS_spec_1, col sep=comma] {covid-19.csv};
+		\addplot[color=green,mark=diamond*] table [x=States, y=GraphBLAS_spec_1, col sep=comma] {covid-19.csv};
        	\legend{CUDAMPF, неспец., ур. 1 спец.}
 	\end{axis}
     \end{tikzpicture}
@@ -143,7 +154,7 @@
           legend pos=outer north east]
         \addplot table [x=States, y=CUDAMPF, col sep=comma] {50_3500.csv};
 		\addplot table [x=States, y=GraphBLAS, col sep=comma] {50_3500.csv};
-		\addplot table [x=States, y=GraphBLAS_spec_1, col sep=comma] {50_3500.csv};
+		\addplot[color=green,mark=diamond*] table [x=States, y=GraphBLAS_spec_1, col sep=comma] {50_3500.csv};
        	\legend{CUDAMPF, неспец., ур. 1 спец.}
 	\end{axis}
     \end{tikzpicture}
@@ -189,11 +200,25 @@
   \label{runtime}
 \end{table}
 
-Как можно видеть из графиков и таблицы, специализированная версия первого уровня превосходит неспециализированную.
-Стоит отметить, что специализация первого уровня хуже \name{CUDAMPF} примерно в 1,5-2 раза.
+Как можно видеть из графиков и таблицы, специализированная 
+версия первого уровня превосходит неспециализированную.
+Стоит отметить, что для использованных данных специализация 
+первого уровня хуже \name{CUDAMPF} примерно в 1,3-1,7 раза.
+Также важным является тот факт, что при обработке СММ с 
+количеством состояний меньше 500, специализированная версия 
+производительнее \name{CUDAMPF}.
+Как видно из рисунка~\ref{HMM_mean}, таких СММ подавляющее 
+большинство.
 
-При измерении специализированных реализаций с использованием библиотеки \name{CUSP} были получены следующие результаты, которые представлены на рисунках~\ref{3500_CUSP},~\ref{7000_CUSP},~\ref{RW_CUSP},~\ref{50_CUSP} и~\ref{Spec_time_CUSP}, а также в таблице~\ref{runtime_CUSP}.
-Здесь использовалась специализация только первого уровня, так как на видеокарте не хватило памяти для специализации второго и далее уровней.
+При измерении специализированных реализаций с использованием 
+библиотеки \name{cuASR} были получены следующие результаты, 
+которые представлены на 
+рисунках~\ref{3500_CUSP},~\ref{7000_CUSP},~\ref{RW_CUSP},~\ref{50_CUSP} 
+и~\ref{Spec_time_CUSP}, а также в таблице~\ref{runtime_CUSP}.
+Здесь использовалась специализация первого и второго уровня, 
+но для СММ, у которых состояний больше чем 2000, на 
+видеокарте не хватило памяти для специализации второго 
+уровня.
 \begin{figure}[h!]
 \centering
 	\begin{tikzpicture}
@@ -205,13 +230,14 @@
           ylabel={Время, мс},
           legend pos=outer north east]
         \addplot table [x=States, y=CUDAMPF, col sep=comma] {3_3500.csv};
-		\addplot table [x=States, y=CUSP, col sep=comma] {3_3500.csv};
-		\addplot table [x=States, y=CUSP_spec_1, col sep=comma] {3_3500.csv};
-       	\legend{CUDAMPF, неспец., ур. 1 спец.}
+		\addplot table [x=States, y=cuASR, col sep=comma] {3_3500.csv};
+		\addplot[color=green,mark=diamond*] table [x=States, y=cuASR_spec_1, col sep=comma] {3_3500.csv};
+		\addplot table [x=States, y=cuASR_spec_2, col sep=comma] {cuASR_3_3500.csv};
+       	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец.}
 	\end{axis}
 
     \end{tikzpicture}
-    \caption{CUSP, 3 x 3500 наблюдений, меньше --- лучше}
+    \caption{cuASR, 3 x 3500 наблюдений, меньше --- лучше}
 \label{3500_CUSP}
 \end{figure}
 
@@ -226,13 +252,14 @@
           ylabel={Время, мс},
           legend pos=outer north east]
         \addplot table [x=States, y=CUDAMPF, col sep=comma] {3_7000.csv};
-		\addplot table [x=States, y=CUSP, col sep=comma] {3_7000.csv};
-		\addplot table [x=States, y=CUSP_spec_1, col sep=comma] {3_7000.csv};
-       	\legend{CUDAMPF, неспец., ур. 1 спец.}
+		\addplot table [x=States, y=cuASR, col sep=comma] {3_7000.csv};
+		\addplot[color=green,mark=diamond*] table [x=States, y=cuASR_spec_1, col sep=comma] {3_7000.csv};
+		\addplot table [x=States, y=cuASR_spec_2, col sep=comma] {cuASR_3_7000.csv};
+       	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец.}
 	\end{axis}
 
     \end{tikzpicture}
-    \caption{CUSP, 3 х 7000 наблюдений, меньше --- лучше}
+    \caption{cuASR, 3 х 7000 наблюдений, меньше --- лучше}
 \label{7000_CUSP}
 \end{figure}
 
@@ -247,13 +274,14 @@
           ylabel={Время, мс},
           legend pos=outer north east]
         \addplot table [x=States, y=CUDAMPF, col sep=comma] {covid-19.csv};
-		\addplot table [x=States, y=CUSP, col sep=comma] {covid-19.csv};
-		\addplot table [x=States, y=CUSP_spec_1, col sep=comma] {covid-19.csv};
-       	\legend{CUDAMPF, неспец., ур. 1 спец.}
+		\addplot table [x=States, y=cuASR, col sep=comma] {covid-19.csv};
+		\addplot[color=green,mark=diamond*] table [x=States, y=cuASR_spec_1, col sep=comma] {covid-19.csv};
+		\addplot table [x=States, y=cuASR_spec_2, col sep=comma] {cuASR_covid-19.csv};
+       	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец.}
 	\end{axis}
 
     \end{tikzpicture}
-    \caption{CUSP, набор данных из БД \name{PFAM}, меньше --- лучше}
+    \caption{cuASR, набор данных из БД \name{PFAM}, меньше --- лучше}
 \label{RW_CUSP}    
 \end{figure}
 
@@ -268,12 +296,13 @@
           ylabel={Время, мс},
           legend pos=outer north east]
         \addplot table [x=States, y=CUDAMPF, col sep=comma] {50_3500.csv};
-		\addplot table [x=States, y=CUSP, col sep=comma] {50_3500.csv};
-		\addplot table [x=States, y=CUSP_spec_1, col sep=comma] {50_3500.csv};
-       	\legend{CUDAMPF, неспец., ур. 1 спец.}
+		\addplot table [x=States, y=cuASR, col sep=comma] {50_3500.csv};
+		\addplot[color=green,mark=diamond*] table [x=States, y=cuASR_spec_1, col sep=comma] {50_3500.csv};
+		\addplot table [x=States, y=cuASR_spec_2, col sep=comma] {cuASR_50_3500.csv};
+       	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец.}
 	\end{axis}
     \end{tikzpicture}
-    \caption{CUSP, 50 x 3500 наблюдений, меньше --- лучше}
+    \caption{cuASR, 50 x 3500 наблюдений, меньше --- лучше}
 \label{50_CUSP}
 \end{figure}
 
@@ -287,52 +316,53 @@
           xlabel={Кол-во состояний в СММ},
           ylabel={Время, мс},
           legend pos=outer north east]
-		\addplot table [x=States, y=CUSP_spec_1_prep, col sep=comma] {50_3500.csv};
-       	\legend{ур. 1 спец.}
+		\addplot table [x=States, y=cuASR_spec_1_prep, col sep=comma] {50_3500.csv};
+		\addplot table [x=States, y=cuASR_spec_2_prep, col sep=comma] {cuASR_50_3500.csv};
+       	\legend{ур. 1 спец., ур. 2 спец.}
 	\end{axis}
     \end{tikzpicture}
-    \caption{CUSP, время на специализацию, меньше --- лучше}
+    \caption{cuASR, время на специализацию, меньше --- лучше}
 \label{Spec_time_CUSP}
 \end{figure}
 
 
 \begin{table}[h!]
   \centering
-  \begin{tabular}{||c c c c||} 
+  \begin{tabular}{||c c c c c||} 
     \hline
-    & CUDAMPF & неспец. & Ур. 1 \\ [0.5ex] 
+    & CUDAMPF & неспец. & Ур. 1 & Ур. 2\\ [0.5ex] 
     \hline\hline
-    3 x 3500 & 4854 & 358002 & 201089 \\ 
+    3 x 3500 & 3666 & 154415 & 77758 & 85977 \\ 
     \hline
-    3 x 7000 & 9209 & 713968 & 400829 \\
+    3 x 7000 & 7053 & 305578 & 153216 & 145176 \\
     \hline
-    Набор из \name{PFAM} & 8796 & 535354 & 301435 \\
+    Набор из \name{PFAM} & 6777 & 241687 & 114214 & 114766 \\
     \hline
-    50 x 3500 & 103036 & 5983963 & 3339231 \\
+    50 x 3500 & 78930 & 2596532 & 1271980 & 1025473 \\
     \hline
   \end{tabular}
-  \caption{CUSP, общее время обработки с учетом затрат времени на специализацию, мс}
+  \caption{cuASR, общее время обработки с учетом затрат времени на специализацию, кол-во состояний СММ меньше 2000, мс}
   \label{runtime_CUSP}
 \end{table}
 
-Исходя из полученных результатов, можно сделать вывод, что, 
-как и в случае с реализациями с использованием 
-\name{GraphBLAS}, при специализации первого уровня
-снижается время обработки последовательностей.
+Резкий скачок, который появляется при обработке СММ с 
+количеством состояний более чем 2000 объясняется тем, что 
+количество ядер \name{CUDA} на использованной видеокарте равно 1920.
+Исходя из полученных результатов, можно сделать вывод, что
+при повышении специализации до второго уровня, снижается 
+время обработки последовательностей.
 В конкретном случае, реализации оказались не такими 
-производительными по сравнению с \name{CUDAMPF} и 
-\name{GraphBLAS}.
-Причиной этого являются особенности реализации библиотеки 
-\name{CUSP}.
-\achtung{Нормально попрофилировать}
+эффективными по сравнению с \name{CUDAMPF} и 
+\name{GraphBLAS}, но применение специализации дает существенный прирост производительности.
 
-Анализируя данные экспериментов, стоит отметить, что 
-специализированный алгоритм Витерби первого уровня производительнее, 
+При анализе проведённых экспериментов видно, что 
+специализированный алгоритм Витерби производительнее, 
 чем неспециализированная версия, то есть специализация дает прирост 
 по скорости обработке последовательностей наблюдений за счет 
 уменьшения количества матричных операций.
-При повышении уровня специализации на второй наблюдается 
-ухудшение производительности.
-\achtung{Указать на то, что лучше в плане инженерии.}
+Стоит также отметить, что реализация алгоритма Витерби с 
+использованием библиотек линейной алгебры существенно проще, 
+чем аналогичная реализация с использованием \name{NVIDIA 
+CUDA} за счет более высокого уровня абстракции.
 
 \newpage

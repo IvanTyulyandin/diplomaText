@@ -124,7 +124,7 @@
 \\
 \textbf{Рецензент}: ст. преп. СПбПУ М.Х. Ахин}
 
-\date{29 апреля 2021}
+\date{9 июня 2021}
 
 \begin{document}
 {
@@ -165,7 +165,7 @@
 	\frametitle{Специализация}
 	Два типа параметров
 	\begin{itemize}
-		\item статичные --- т.е. зафиксированные
+		\item статические --- т.е. зафиксированные
 		\item динамические --- все остальные
 	\end{itemize}
 	\vfill
@@ -173,7 +173,7 @@
 		Техника преобразования программ для оптимизации использования статических данных с целью уменьшить количество вычислений
 	\end{block}
 	\vfill
-	Применение специализации к алгоритма методами ЛА не изучено
+	Применение специализации к алгоритмам, выраженными методами ЛА, не изучено
 \end{frame}
 
 \begin{frame}[fragile]
@@ -222,46 +222,22 @@ $\mathit{O_{j}}$ в состоянии $\mathit{S_{i}}$
 		\end{itemize}
 	\end{block}
 	\vfill
-Алгоритм Витерби, выраженный с помощью полукольца \emph{Min-plus}
 \end{frame}
 
 
 \begin{frame}[fragile]
-	\frametitle{Полукольцо \emph{Min-plus}}
-\begin{itemize}
-	\item Переопределяем '+' как \emph{min}, '*' как  \emph{plus}, $\infty$ и $0$ как нейтральные элементы
-	\vfill
-	Пример матричного умножения
-\[
-  \begin{pmatrix}
-    0 & 1 \\
-    +\infty & 2
-  \end{pmatrix}
-  \times
-  \begin{pmatrix}
-    3 \\
-    4
-  \end{pmatrix}
-  =
-  \begin{pmatrix}
-    min(0 + 3, 1 + 4) \\
-    min(+\infty + 3, 2 + 4)
-  \end{pmatrix}
-  =
-  \begin{pmatrix}
-    3 \\
-    6
-  \end{pmatrix}
-\]
+	\frametitle{Алгоритм Витерби}
+СММ и последовательность наблюдений
 \vfill
-\item Для всех вероятностей \emph{p} из СММ:
+Алгоритм Витерби, выраженный с помощью полукольца \emph{Min-plus}
+\vfill
+Для всех вероятностей \emph{p} из СММ:
 \[  t(p) =
     \begin{cases}
       p > 0: & -1 * log_{2}(p))\\
       p = 0: & +\infty
     \end{cases}       
 \]
-\end{itemize}
 \end{frame}
 
 
@@ -340,13 +316,9 @@ $\mathit{PT}(\mathit{o}_{2}) \times \mathit{PT}(\mathit{o}_{1})$.
 
 \begin{frame}[fragile]
 	\frametitle{Реализация}
-	Выбор библиотек
-	\begin{itemize}
-		\item Часто СММ разреженные
-		\item Нужно и для CPU, и для GPGPU
-	\end{itemize}
+Нужно и для CPU, и для GPGPU
 	\vfill
-	Библиотеки \name{SuiteSparse:GraphBLAS} и \name{CUSP}
+	Библиотеки \name{SuiteSparse:GraphBLAS} и \name{cuASR}
 	\vfill
 	Проведено тестирование
 	\begin{itemize}
@@ -360,127 +332,125 @@ $\mathit{PT}(\mathit{o}_{2}) \times \mathit{PT}(\mathit{o}_{1})$.
 \begin{frame}[fragile]
 	\frametitle{Эксперименты}
 	\begin{itemize}	
-		\item Ubuntu 20.04, Intel Core i7-4790 3.60 
-GHz, NVIDIA GeForce GTX 1030, 32 Gb RAM
+		\item Ubuntu 20.04 \newline Intel Core i7-6700 3.40 
+ГГц, 64 Гб RAM \newline NVIDIA GeForce GTX 1070, 8Гб, 1920 CUDA-ядер
 		\vfill
-		\item Сравнение специализированной версии против неспециализированной и \name{CUDAMPF}
+		\item Сравнение специализированной версии c неспециализированной и \name{CUDAMPF}
 		\vfill
-		\item 24 СММ из репозитория \name{CUDAMPF}, три набора данных
+		\item 24 СММ из репозитория \name{CUDAMPF}, 4 набора данных
 		\vfill 
-		\item Медиана из 100 запусков
+		\item Медиана из 10 запусков
 	\end{itemize}
 \end{frame}
 
 
 \begin{frame}[fragile]
 	\frametitle{Эксперименты}
-\begin{figure}[!h]
+\begin{figure}[h!]
+\centering
 	\begin{tikzpicture}
-		\begin{axis}[
-	  title={},
+	\begin{axis}[
+	      title={},
           axis x line=bottom,
           axis y line=left,
           xlabel={Кол-во состояний в СММ},
           ylabel={Время, мс},
-          legend pos=north west]
-        	\addplot[mark=square,red,thick] table[x=states,y=cudampf] {../3500_bench.dat};
-        	\addplot[mark=square,blue,thick] table[x=states,y=ns] {../3500_median_bench.dat};
-        	\addplot[mark=square,green,thick] table[x=states,y=s1] {../3500_median_bench.dat};
-        	\addplot[mark=square,magenta,thick] table[x=states,y=s2] {../3500_median_bench.dat};
-        	\addplot[mark=square,black,thick] table[x=states,y=s3] {../3500_median_bench.dat};
-        	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      		\end{axis}
+          legend pos=outer north east]
+        \addplot table [x=States, y=CUDAMPF, col sep=comma] {../covid-19.csv};
+		\addplot table [x=States, y=GraphBLAS, col sep=comma] {../covid-19.csv};
+		\addplot[color=green,mark=diamond*] table [x=States, y=GraphBLAS_spec_1, col sep=comma] {../covid-19.csv};
+       	\legend{CUDAMPF, неспец., ур. 1 спец.}
+	\end{axis}
     \end{tikzpicture}
-    \caption{3 x 3500 наблюдений, меньше --- лучше}
+    \caption{GraphBLAS, набор данных из БД \name{PFAM}, меньше --- лучше}
+\label{RW_SS}    
 \end{figure}
 \end{frame}
 
 
 \begin{frame}[fragile]
 	\frametitle{Эксперименты}
-\begin{figure}[!h]
+\begin{figure}[h!]
+\centering
 	\begin{tikzpicture}
-		\begin{axis}[
-	  title={},
+	\begin{axis}[
+	      title={},
           axis x line=bottom,
           axis y line=left,
           xlabel={Кол-во состояний в СММ},
           ylabel={Время, мс},
-          legend pos=north west]
-        	\addplot[mark=square,red,thick] table[x=states,y=cudampf] {../7000_bench.dat};
-        	\addplot[mark=square,blue,thick] table[x=states,y=ns] {../7000_median_bench.dat};
-        	\addplot[mark=square,green,thick] table[x=states,y=s1] {../7000_median_bench.dat};
-        	\addplot[mark=square,magenta,thick] table[x=states,y=s2] {../7000_median_bench.dat};
-        	\addplot[mark=square,black,thick] table[x=states,y=s3] {../7000_median_bench.dat};
-        	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      		\end{axis}
+          legend pos=outer north east]
+		\addplot table [x=States, y=GraphBLAS_spec_1_prep, col sep=comma] {../50_3500.csv};
+		\addplot table [x=States, y=GraphBLAS_spec_2_prep, col sep=comma] {../50_3500.csv};
+       	\legend{ур. 1 спец., ур. 2 спец.}
+	\end{axis}
     \end{tikzpicture}
-    \caption{3 x 7000 наблюдений, меньше --- лучше}
+    \caption{GraphBLAS, время на специализацию, меньше --- лучше}
+\label{Spec_time_SS}
 \end{figure}
 \end{frame}
-
 
 \begin{frame}[fragile]
 	\frametitle{Эксперименты}
-\begin{figure}[!h]
+\begin{figure}[h!]
+\centering
 	\begin{tikzpicture}
-		\begin{axis}[
-	  title={},
+	\begin{axis}[
+	      title={},
           axis x line=bottom,
           axis y line=left,
           xlabel={Кол-во состояний в СММ},
           ylabel={Время, мс},
-          legend pos=north west]
-        	\addplot[mark=square,red,thick] table[x=states,y=cudampf] {../covid_bench.dat};
-        	\addplot[mark=square,blue,thick] table[x=states,y=ns] {../covid_median_bench.dat};
-        	\addplot[mark=square,green,thick] table[x=states,y=s1] {../covid_median_bench.dat};
-        	\addplot[mark=square,magenta,thick] table[x=states,y=s2] {../covid_median_bench.dat};
-        	\addplot[mark=square,black,thick] table[x=states,y=s3] {../covid_median_bench.dat};
-        	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      		\end{axis}
+          legend pos=outer north east]
+        \addplot table [x=States, y=CUDAMPF, col sep=comma] {../covid-19.csv};
+		\addplot table [x=States, y=cuASR, col sep=comma] {../covid-19.csv};
+		\addplot[color=green,mark=diamond*] table [x=States, y=cuASR_spec_1, col sep=comma] {../covid-19.csv};
+		\addplot table [x=States, y=cuASR_spec_2, col sep=comma] {../cuASR_covid-19.csv};
+       	\legend{CUDAMPF, неспец., ур. 1 спец., ур. 2 спец.}
+	\end{axis}
+
     \end{tikzpicture}
-    \caption{16 последовательностей из БД \name{PFAM}, меньше --- лучше}
+    \caption{cuASR, набор данных из БД \name{PFAM}, меньше --- лучше}
+\label{RW_CUSP}    
 \end{figure}
 \end{frame}
-
 
 \begin{frame}[fragile]
 	\frametitle{Эксперименты}
-\begin{figure}[!h]
+\begin{figure}[h!]
+\centering
 	\begin{tikzpicture}
-		\begin{axis}[
-	  title={},
+	\begin{axis}[
+	      title={},
           axis x line=bottom,
           axis y line=left,
           xlabel={Кол-во состояний в СММ},
           ylabel={Время, мс},
-          legend pos=north west]
-        \addplot[mark=square,green,thick] table[x=states,y=st1] {../3500_bench.dat};
-        \addplot[mark=square,magenta,thick] table[x=states,y=st2] {../3500_bench.dat};
-        \addplot[mark=square,black,thick] table[x=states,y=st3] {../3500_bench.dat};                  \legend{ур. 1 спец., ур. 2 спец., ур. 3 спец.}
-      \end{axis}
+          legend pos=outer north east]
+		\addplot table [x=States, y=cuASR_spec_1_prep, col sep=comma] {../50_3500.csv};
+		\addplot table [x=States, y=cuASR_spec_2_prep, col sep=comma] {../cuASR_50_3500.csv};
+       	\legend{ур. 1 спец., ур. 2 спец.}
+	\end{axis}
     \end{tikzpicture}
-    \caption{Время, затраченное на специализацию, меньше --- лучше}
+    \caption{cuASR, время на специализацию, меньше --- лучше}
+\label{Spec_time_CUSP}
 \end{figure}
 \end{frame}
 
 \begin{frame}[fragile]
-	\frametitle{Текущие результаты}
+	\frametitle{Результаты}
 \begin{itemize}
 	\item Выполнен обзор предметной области
 	\item Реализованы и протестированы две реализации специализированного алгоритма Витерби
 		\begin{itemize}
 			\item \name{Sui\-te\-Spar\-se:Graph\-BLAS} для выполнения на CPU
-			\item \name{CUSP} для выполнения на GPGPU
+			\item \name{cuASR} для выполнения на GPGPU
 		\end{itemize}
-	\item Проведены эксперименты на данных из репозитория \name{CUDAMPF}. 
-Специализированная версия с использованием 
-\name{Sui\-te\-Spar\-se:Graph\-BLAS} в 1,5 раза 
-производительнее \name{CUDAMPF}.
+	\item Проведены эксперименты на данных из репозитория \name{CUDAMPF}
 \vfill
-\name{SEIM 2021}: статья \emph{Viterbi Algorithm Specialization Using Linear Algebra} 
+Специализированная версия алгоритма Витерби превосходит неспециализированную
 \vfill
-Необходимо провести эксперименты на \name{CUSP} и эксперименты на большем количестве последовательностей
+\name{SEIM 2021}: статья \emph{Viterbi Algorithm Specialization Using Linear Algebra}
 \end{itemize}
 \end{frame}
 
@@ -489,6 +459,23 @@ GHz, NVIDIA GeForce GTX 1030, 32 Gb RAM
 
 \appendix
 \backupbegin
+
+\begin{frame}
+	\frametitle{Ответы на вопросы рецензента}
+\begin{enumerate}
+	\item Подход не зависит от бионформатики и применим в областях, где СММ может быть фиксирована
+	\vfill
+	\item Не было найдено инструментов для специализации с возможностью оптимизации ЛА
+	\vfill
+	\item На графиках указано время обработки без учёта специализации
+	\vfill
+	\item Точная причина не установлена
+	\vfill
+	\item Количество CUDA-ядер у NVIDIA GTX 1070 равно 1920 
+	\vfill
+	\item Указано время для обработки СММ с кол-вом состояний менее 2000
+\end{enumerate}
+\end{frame}
 
 \begin{frame}[fragile]
 	\frametitle{Пример специализации: возведение в степень}
@@ -505,7 +492,7 @@ function f(x, n)
 function f_spec(x) = x * (x^2)^2
 \end{lstlisting}
 	\vfill
-	Специализация бесполезна, если $x$ статический параметр
+	Специализация бесполезна, если $x$ --- статический параметр
 \end{frame}
 
 
@@ -559,6 +546,34 @@ function f_spec(x) = x * (x^2)^2
 \end{figure}
 \end{frame}
 
+\begin{frame}[fragile]
+	\frametitle{Полукольцо \emph{Min-plus}}
+Переопределяем '+' как \emph{min}, '*' как  \emph{plus}, $\infty$ и $0$ как нейтральные элементы
+	\vfill
+	Пример матричного умножения
+\[
+  \begin{pmatrix}
+    0 & 1 \\
+    +\infty & 2
+  \end{pmatrix}
+  \times
+  \begin{pmatrix}
+    3 \\
+    4
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    min(0 + 3, 1 + 4) \\
+    min(+\infty + 3, 2 + 4)
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    3 \\
+    6
+  \end{pmatrix}
+\]
+\end{frame}
+
 
 \begin{frame}
 	\frametitle{О повышении уровня}
@@ -572,27 +587,59 @@ function f_spec(x) = x * (x^2)^2
 	Все произведения $PT(o)$ могут быть вычислены по данным из СММ
 \end{frame}
 
+\begin{frame}
+	\frametitle{СММ в БД PFAM}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.80\columnwidth]{../mean_HMM.png}
+  \caption{График зависимости количества СММ от количества состояний в них}
+  \label{HMM_mean}
+\end{figure}
+\end{frame}
 
 \begin{frame}[fragile]
-	\frametitle{Общее время выполнения}
-	\begin{table}[t!]
+	\frametitle{Эксперименты}
+\begin{table}[h!]
   \centering
-  \begin{tabular}{||c c c c c c||} 
+  \begin{tabular}{||c c c c c||} 
     \hline
-    & CUDAMPF & Initial & 1-level & 2-level & 3-level\\ [0.5ex] 
+    & CUDAMPF & неспец. & Ур. 1 & Ур. 2 \\ [0.5ex] 
     \hline\hline
-    3 x 3500 & 7907 & 11365 & 8747 & \textbf{5332} & 18858 \\ 
+    3 x 3500 & 4854 & 10765 & 8062 & 215329 \\ 
     \hline
-    3 x 7000 & \textbf{8862} & 22641 & 17342 & 9630 & 21356 \\
+    3 x 7000 & 9209 & 21062 & 16152 & 387464 \\
     \hline
-    Real world & 8347 & 17064 & 12956 & \textbf{7311} & 19581 \\
+    Набор из \name{PFAM} & 8796 & 15864 & 12036 & 298269 \\
+    \hline
+    50 x 3500 & 103036 & 176263 & 134259 & 2921104 \\
     \hline
   \end{tabular}
-  \caption{Общее время выполнения (специализация и выполнение специализированного алгоритма Витерби), мс}
+  \caption{GraphBLAS, общее время обработки с учетом затрат времени на специализацию, мс}
   \label{runtime}
 \end{table}
 \end{frame}
 
+\begin{frame}[fragile]
+	\frametitle{Эксперименты}
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{||c c c c c||} 
+    \hline
+    & CUDAMPF & неспец. & Ур. 1 & Ур. 2\\ [0.5ex] 
+    \hline\hline
+    3 x 3500 & 3666 & 154415 & 77758 & 85977 \\ 
+    \hline
+    3 x 7000 & 7053 & 305578 & 153216 & 145176 \\
+    \hline
+    Набор из \name{PFAM} & 6777 & 241687 & 114214 & 114766 \\
+    \hline
+    50 x 3500 & 78930 & 2596532 & 1271980 & 1025473 \\
+    \hline
+  \end{tabular}
+  \caption{cuASR, общее время обработки с учетом затрат времени на специализацию, кол-во состояний СММ меньше 2000, мс}
+  \label{runtime_CUSP}
+\end{table}
+\end{frame}
 
 \backupend
 
